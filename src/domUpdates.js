@@ -115,6 +115,14 @@ function createRecipeHTML(recipe) {
   article.classList.add("recipe-card");
   article.dataset.id = recipe.id;
 
+  const heartIcon = isRecipeFavorited(recipe, favoriteRecipes)
+    ? heartOn
+    : heartOff;
+
+  isRecipeFavorited(recipe, favoriteRecipes)
+    ? addRecipeToArray(favoriteRecipes, recipe)
+    : removeRecipeFromArray(favoriteRecipes, recipe);
+
   article.innerHTML = `
     <div class="recipe-image">
       <img src="${recipe.image}" alt="${recipe.name}">
@@ -122,9 +130,7 @@ function createRecipeHTML(recipe) {
     <div class="recipe-info">
       <div class="tags-and-heart">
         <h3 class="recipe-tags">${recipe.tags.join(", ")}</h3>
-        <div class="heart-container">
-          
-        </div>
+        <div class="heart-container">${heartIcon}</div>
       </div>
       <h2 class="recipe-name">${recipe.name}</h2>
       <h3 class="recipe-ingredients">
@@ -132,16 +138,6 @@ function createRecipeHTML(recipe) {
       ${findRecipeIngredients(recipe, ingredientsData).join(", ")}
     </h3>
     </div>`;
-
-  const currentHeart = article.querySelector(".heart-container");
-  currentHeart.innerHTML = "";
-  if (isRecipeFavorited(recipe, favoriteRecipes)) {
-    currentHeart.innerHTML = heartOn;
-    addRecipeToArray(favoriteRecipes, recipe);
-  } else {
-    currentHeart.innerHTML = heartOff;
-    removeRecipeFromArray(favoriteRecipes, recipe);
-  }
 
   return article;
 }
@@ -170,7 +166,9 @@ function createRecipePageHTML(recipe) {
     })
     .join("");
 
-    const heartIcon = isRecipeFavorited(recipe, favoriteRecipes) ? heartOn : heartOff;
+  const heartIcon = isRecipeFavorited(recipe, favoriteRecipes)
+    ? heartOn
+    : heartOff;
 
   recipeContainer.innerHTML = `
   <div class="recipe-main">
@@ -194,19 +192,22 @@ function createRecipePageHTML(recipe) {
     <ul class="ingredients">${ingredientQuantityHTML}</ul>
   </div>`;
 
-  const heartContainer = recipeContainer.querySelector('.heart-container');
-  heartContainer.addEventListener('click', function() {
-    if (!isRecipeFavorited(recipe, favoriteRecipes)) {
-      heartContainer.innerHTML = heartOn;
-      addRecipeToArray(favoriteRecipes, recipe);
-    } else {
-      heartContainer.innerHTML = heartOff;
-      removeRecipeFromArray(favoriteRecipes, recipe);
-    }
-  });
-
+  const heartContainer = recipeContainer.querySelector(".heart-container");
+  heartContainer.addEventListener("click", (e) =>
+    toggleHeart(e.currentTarget, recipe, favoriteRecipes)
+  );
 
   return recipeContainer;
+}
+
+function toggleHeart(element, recipe, recipe_dataset) {
+  if (!isRecipeFavorited(recipe, recipe_dataset)) {
+    element.innerHTML = heartOn;
+    addRecipeToArray(recipe_dataset, recipe);
+  } else {
+    element.innerHTML = heartOff;
+    removeRecipeFromArray(recipe_dataset, recipe);
+  }
 }
 
 function getActiveTags() {
