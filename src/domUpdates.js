@@ -7,6 +7,7 @@ import {
   findRecipeIngredientsQuantity,
   findRecipeInstructions,
 } from "./recipes";
+import { convertToUS } from "./scripts";
 import { search } from "./search";
 
 let recipesToDisplay = recipeData;
@@ -128,7 +129,7 @@ function createRecipePageHTML(recipe) {
   );
 
   const ingredientList = findRecipeIngredients(recipe, ingredientsData);
-  const quantityList = findRecipeIngredientsQuantity(recipe);
+  const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
 
   let ingredientQuantityHTML = ingredientList
     .map((ingredient, index) => {
