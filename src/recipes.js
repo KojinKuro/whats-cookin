@@ -55,3 +55,9 @@ export function isFavorited(favoriteRecipes, recipe_dataset) {
     recipe_dataset.some((dataRecipe) => dataRecipe.id === recipe.id)
   );
 }
+
+export function isRecipeFavorited(recipe, recipe_dataset){
+  return (recipe_dataset.find(currentRecipe => {
+    return currentRecipe.id === recipe.id
+  }))
+}

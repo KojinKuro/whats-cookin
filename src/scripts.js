@@ -9,9 +9,12 @@ import "./images/turing-logo.png";
 import usersData from "./data/users";
 import { displayRecipes } from "./domUpdates";
 import { findRecipeIngredients } from "./recipes";
+import recipeData from "./data/recipes";
+
 
 // all the favorite recipes should be stored as recipe objects here
-const favoriteRecipes = [];
+export const favoriteRecipes = [];
+global.favoriteRecipes = favoriteRecipes
 export const currentUser = getRandomUser(usersData);
 global.currentUser = currentUser;
 
