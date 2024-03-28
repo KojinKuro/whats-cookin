@@ -15,7 +15,7 @@ import { search } from "./search";
 
 let recipesToDisplay = recipeData;
 let viewChanged = false;
-let isSavedRecipesView =false;
+let isSavedRecipesView = false;
 
 const logo = document.querySelector(".logo");
 const tagsContainer = document.querySelector(".tags-container");
