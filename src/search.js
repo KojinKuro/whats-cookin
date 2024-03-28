@@ -29,6 +29,6 @@ function matchIngredient(recipe, searchQuery, ingredient_dataset) {
   return false;
 }
 
-function sanitizeString(string) {
+export function sanitizeString(string) {
   return string.toLowerCase();
 }
