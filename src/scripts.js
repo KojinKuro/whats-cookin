@@ -18,9 +18,11 @@ global.favoriteRecipes = favoriteRecipes
 export const currentUser = getRandomUser(usersData);
 global.currentUser = currentUser;
 
-console.log(ingredientsData);
-findRecipeIngredients("Dirty Steve's Original Wing Sauce");
-displayRecipes();
+
+
+// console.log(ingredientsData);
+// findRecipeIngredients("Dirty Steve's Original Wing Sauce");
+// displayRecipes();
 
 function getRandomUser(user_dataset) {
   return user_dataset[randomNumber(user_dataset.length)];
