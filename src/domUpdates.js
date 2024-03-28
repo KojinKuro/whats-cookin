@@ -1,6 +1,12 @@
 import { filterRecipeByTag, getTagRecipeCount } from "../src/tags";
-import ingredientsData from "./data/ingredients";
-import recipeData from "./data/recipes";
+import {
+  fetchData,
+  ingredientsAPIData,
+  recipesAPIData,
+  usersAPIData,
+} from "./apiCalls";
+// import ingredientsData from "./data/ingredients";
+// import recipeData from "./data/recipes";
 import {
   addRecipeToArray,
   findRecipeFromID,
@@ -10,11 +16,15 @@ import {
   isRecipeFavorited,
   removeRecipeFromArray,
 } from "./recipes";
-import { favoriteRecipes } from "./scripts";
-import { currentUser } from "./scripts";
+import {
+  currentUser,
+  favoriteRecipes,
+  getRandomUser,
+  setCurrentUser,
+} from "./scripts";
 import { search } from "./search";
 
-let recipesToDisplay = recipeData;
+let recipesToDisplay;
 let viewChanged = false;
 
 const logo = document.querySelector(".logo");
@@ -37,7 +47,7 @@ style="
 </svg>`;
 
 // EVENT LISTENERS
-addEventListener("load", init);
+addEventListener("load", fetchData);
 searchBox.addEventListener("input", filterRecipes);
 tagsContainer.addEventListener("click", function (e) {
   if (!e.target.classList.contains("tag")) return;
@@ -51,7 +61,7 @@ mainDirectory.addEventListener("scroll", () => {
 mainDirectory.addEventListener("click", (e) => {
   if (!e.target.closest(".recipe-card")) return;
   const clickedRecipe = e.target.closest(".recipe-card");
-  const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipeData);
+  const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
   if (e.target.closest(".heart-container")) {
     const heartContainer = e.target.closest(".heart-container");
     heartContainer.innerHTML = "";
@@ -71,8 +81,12 @@ mainDirectory.addEventListener("click", (e) => {
 });
 
 // FUNCTIONS
-function init() {
+export function init() {
+  setCurrentUser(getRandomUser(usersAPIData));
+
+  recipesToDisplay = recipesAPIData;
   displayRecipes(recipesToDisplay);
+
   updateTagsToDOM();
   logo.innerText += ` ${currentUser.name}`;
 }
@@ -138,7 +152,7 @@ function createRecipeHTML(recipe) {
       <h2 class="recipe-name">${recipe.name}</h2>
       <h3 class="recipe-ingredients">
       <span class="label"> ingredients </span>
-      ${findRecipeIngredients(recipe, ingredientsData).join(", ")}
+      ${findRecipeIngredients(recipe, ingredientsAPIData).join(", ")}
     </h3>
     </div>`;
 
@@ -157,7 +171,7 @@ function createRecipePageHTML(recipe) {
     ""
   );
 
-  const ingredientList = findRecipeIngredients(recipe, ingredientsData);
+  const ingredientList = findRecipeIngredients(recipe, ingredientsAPIData);
   const quantityList = findRecipeIngredientsQuantity(recipe);
 
   let ingredientQuantityHTML = ingredientList
@@ -220,7 +234,7 @@ function getActiveTags() {
 
 function updateTagsToDOM() {
   const activeTags = getActiveTags();
-  const tagRecipeCount = getTagRecipeCount(activeTags, recipeData);
+  const tagRecipeCount = getTagRecipeCount(activeTags, recipesAPIData);
   const tagNames = Object.keys(tagRecipeCount);
 
   tagsContainer.innerHTML = "";
@@ -242,20 +256,16 @@ function isSentinelInView() {
 }
 
 function filterRecipes() {
-  recipesToDisplay = filterRecipeByTag(getActiveTags(), recipeData);
+  recipesToDisplay = filterRecipeByTag(getActiveTags(), recipesAPIData);
   recipesToDisplay = search(
     searchBox.value.trim(),
     recipesToDisplay,
-    ingredientsData
+    ingredientsAPIData
   );
 
   viewChanged = true;
   displayRecipes(recipesToDisplay);
   updateTagsToDOM();
 }
-
-
-
-
 
 export { displayRecipes };

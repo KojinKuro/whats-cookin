@@ -1,21 +1,23 @@
 // Your fetch requests will live here!
 
-export let usersAPIData = [];
-export let recipesAPIData = [];
-export let ingredientsAPIData = [];
-
 // global.usersAPIData = usersAPIData;
 // global.recipesAPIData = recipesAPIData;
 // global.ingredientsAPIData = ingredientsAPIData;
 
-function loadUser() {
+import { init } from "./domUpdates";
+
+export let usersAPIData;
+export let recipesAPIData;
+export let ingredientsAPIData;
+
+function fetchUser() {
   return fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/users")
     .then((r) => r.json())
     .then((data) => data.users)
     .catch((error) => console.log(error));
 }
 
-function loadIngredients() {
+function fetchIngredients() {
   return fetch(
     "https://what-s-cookin-starter-kit.herokuapp.com/api/v1/ingredients"
   )
@@ -24,28 +26,20 @@ function loadIngredients() {
     .catch((error) => console.log(error));
 }
 
-function loadRecipes() {
+function fetchRecipes() {
   return fetch("https://what-s-cookin-starter-kit.herokuapp.com/api/v1/recipes")
     .then((r) => r.json())
     .then((data) => data.recipes)
     .catch((error) => console.log(error));
 }
 
-function loadData() {
-  Promise.all([loadUser(), loadIngredients(), loadRecipes()]).then(
+export function fetchData() {
+  Promise.all([fetchUser(), fetchIngredients(), fetchRecipes()]).then(
     ([user, ingredient, recipes]) => {
       usersAPIData = user;
       ingredientsAPIData = ingredient;
       recipesAPIData = recipes;
+      init();
     }
   );
 }
-
-function printData() {
-  console.log(usersAPIData);
-  console.log(ingredientsAPIData);
-  console.log(recipesAPIData);
-}
-
-global.loadData = loadData;
-global.printData = printData;
