@@ -51,19 +51,20 @@ describe("Recipe", () => {
     it("Should return an array of ingredients quantities given a recipe", () => {
       const ingredients = findRecipeIngredientsQuantity(
         recipe1,
-        ingredientsData
+        ingredientsData,
+        true
       );
       expect(ingredients).to.deep.equal([
-        "1.5 c",
+        "1.5 cup",
         "0.5 tsp",
         "1 large",
-        "0.5 c",
-        "3 Tbsp",
-        "0.5 c",
+        "8 Tbs",
+        "3 Tbs",
+        "8 Tbs",
         "0.5 tsp",
         "24 servings",
-        "2 c",
-        "0.5 c",
+        "2 cup",
+        "8 Tbs",
         "0.5 tsp",
       ]);
     });
@@ -71,15 +72,18 @@ describe("Recipe", () => {
     it("Should return a different array of ingredients quantities given a different recipe", () => {
       const ingredients = findRecipeIngredientsQuantity(
         recipe2,
-        ingredientsData
+        ingredientsData,
+        true
       );
+
+      console.log(ingredients);
       expect(ingredients).to.deep.equal([
-        "160 g",
-        "40 g",
+        "5.64 oz",
+        "1.41 oz",
         "1",
         "1 pinch",
-        "40 g",
-        "80 g",
+        "1.41 oz",
+        "2.82 oz",
         "1 stick",
       ]);
     });
