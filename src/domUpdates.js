@@ -50,7 +50,7 @@ mainDirectory.addEventListener("click", (e) => {
   if (!e.target.closest(".recipe-card")) return;
   const clickedRecipe = e.target.closest(".recipe-card");
   const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipeData);
-  if (e.target.classList.contains("heart")) {
+  if (e.target.closest(".heart-container")) {
     const heartContainer = e.target.closest(".heart-container");
     heartContainer.innerHTML = "";
     if (!isRecipeFavorited(recipe, favoriteRecipes)) {
