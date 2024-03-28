@@ -24,7 +24,7 @@ const filterSection = document.querySelector("nav.filter-container");
 const searchBox = document.querySelector(".search-box");
 
 const heartOn =
-  '<svg class="heart" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #b30202;transform: ;msFilter:;"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>';
+  '<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: #b30202;transform: ;msFilter:;"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>';
 const heartOff = `<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 style="
   fill: rgba(157, 150, 139, 1);
@@ -170,6 +170,8 @@ function createRecipePageHTML(recipe) {
     })
     .join("");
 
+    const heartIcon = isRecipeFavorited(recipe, favoriteRecipes) ? heartOn : heartOff;
+
   recipeContainer.innerHTML = `
   <div class="recipe-main">
     <div class="image-container">
@@ -184,10 +186,25 @@ function createRecipePageHTML(recipe) {
     <ol>${instructionsList}</ol>
   </div>
   <div class="ingredients-container">
-    <h1 class="gatile">Ingredients</h1>
+    <div class="ingredients-and-heart">
+      <h1 class="gatile">Ingredients</h1>
+      <div class="heart-container">${heartIcon}</div>
+    </div>
     <hr />
     <ul class="ingredients">${ingredientQuantityHTML}</ul>
   </div>`;
+
+  const heartContainer = recipeContainer.querySelector('.heart-container');
+  heartContainer.addEventListener('click', function() {
+    if (!isRecipeFavorited(recipe, favoriteRecipes)) {
+      heartContainer.innerHTML = heartOn;
+      addRecipeToArray(favoriteRecipes, recipe);
+    } else {
+      heartContainer.innerHTML = heartOff;
+      removeRecipeFromArray(favoriteRecipes, recipe);
+    }
+  });
+
 
   return recipeContainer;
 }
