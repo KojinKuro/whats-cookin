@@ -8,6 +8,7 @@ import {
   findRecipeInstructions,
 } from "./recipes";
 import { search } from "./search";
+import { favoriteRecipes } from "../src/scripts.js"
 
 let recipesToDisplay = recipeData;
 let viewChanged = false;
@@ -18,6 +19,8 @@ const mainDirectory = document.getElementById("directory-page");
 const mainRecipe = document.getElementById("recipe-page");
 const filterSection = document.querySelector("nav.filter-container");
 const searchBox = document.querySelector(".search-box");
+const cookbookButton = document.querySelector(".cookbook");
+const savedRecipesButton = document.querySelector(".saved-recipes");
 
 // EVENT LISTENERS
 addEventListener("load", init);
@@ -40,6 +43,26 @@ mainDirectory.addEventListener("click", (e) => {
   main.append(createRecipePageHTML(recipe));
   main.setAttribute("id", "recipe-page");
   filterSection.classList.add("hidden");
+});
+cookbookButton.addEventListener("click", function() {
+  mainDirectory.innerHTML = "";
+  searchBox.value = "";
+
+  const activeTags = tagsContainer.querySelectorAll(".tag-active");
+  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
+
+  recipesToDisplay = [...recipeData];
+
+  displayRecipes(recipesToDisplay);
+  updateTagsToDOM();
+
+  main.setAttribute("id", "directory-page");
+  filterSection.classList.remove("hidden");
+
+  mainDirectory.scrollTop = 0;
+});
+savedRecipesButton.addEventListener("click", function() {
+  displaySavedRecipes(favoriteRecipes);
 });
 
 // FUNCTIONS
@@ -200,6 +223,17 @@ function filterRecipes() {
   viewChanged = true;
   displayRecipes(recipesToDisplay);
   updateTagsToDOM();
+}
+
+function displaySavedRecipes() {
+  if (favoriteRecipes && favoriteRecipes.length > 0) {
+    favoriteRecipes.forEach((recipe) => {
+      const recipeHTML = createRecipeHTML(recipe);
+      main.append(recipeHTML);
+    });
+  } else {
+    main.innerHTML = '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No saved recipes found.</div>';
+  }
 }
 
 export { displayRecipes };

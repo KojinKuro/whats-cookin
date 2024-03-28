@@ -10,8 +10,5 @@ import { displayRecipes } from "./domUpdates";
 import { findRecipeIngredients } from "./recipes";
 
 // all the favorite recipes should be stored as recipe objects here
-const favoriteRecipes = [];
+export const favoriteRecipes = [];
 
-console.log(ingredientsData);
-findRecipeIngredients("Dirty Steve's Original Wing Sauce");
-displayRecipes();
