@@ -12,7 +12,7 @@ import { findRecipeIngredients } from "./recipes";
 
 // all the favorite recipes should be stored as recipe objects here
 const favoriteRecipes = [];
-const currentUser = getRandomUser(usersData);
+export const currentUser = getRandomUser(usersData);
 global.currentUser = currentUser;
 
 console.log(ingredientsData);
