@@ -8,9 +8,12 @@ import "./images/turing-logo.png";
 // Below are examples of how you can import functions from either the recipes or domUpdates files.
 import { displayRecipes } from "./domUpdates";
 import { findRecipeIngredients } from "./recipes";
+import recipeData from "./data/recipes";
+
 
 // all the favorite recipes should be stored as recipe objects here
-const favoriteRecipes = [];
+export const favoriteRecipes = [];
+global.favoriteRecipes = favoriteRecipes
 
 console.log(ingredientsData);
 findRecipeIngredients("Dirty Steve's Original Wing Sauce");
