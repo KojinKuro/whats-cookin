@@ -7,11 +7,13 @@ import {
   findRecipeIngredientsQuantity,
   findRecipeInstructions,
 } from "./recipes";
+import { currentUser } from "./scripts";
 import { search } from "./search";
 
 let recipesToDisplay = recipeData;
 let viewChanged = false;
 
+const logo = document.querySelector(".logo");
 const tagsContainer = document.querySelector(".tags-container");
 const main = document.querySelector("main");
 const mainDirectory = document.getElementById("directory-page");
@@ -46,6 +48,7 @@ mainDirectory.addEventListener("click", (e) => {
 function init() {
   displayRecipes(recipesToDisplay);
   updateTagsToDOM();
+  logo.innerText += ` ${currentUser.name}`;
 }
 
 const loadMoreRecipes = (function () {
