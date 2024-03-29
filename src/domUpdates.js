@@ -16,12 +16,7 @@ import {
   isRecipeFavorited,
   removeRecipeFromArray,
 } from "./recipes";
-import {
-  currentUser,
-  favoriteRecipes,
-  getRandomUser,
-  setCurrentUser,
-} from "./scripts";
+import { currentUser, getRandomUser, setCurrentUser } from "./scripts";
 import { search } from "./search";
 
 let recipesToDisplay;
@@ -65,12 +60,12 @@ mainDirectory.addEventListener("click", (e) => {
   if (e.target.closest(".heart-container")) {
     const heartContainer = e.target.closest(".heart-container");
     heartContainer.innerHTML = "";
-    if (!isRecipeFavorited(recipe, favoriteRecipes)) {
+    if (!isRecipeFavorited(recipe, currentUser.recipesToCook)) {
       heartContainer.innerHTML = heartOn;
-      addRecipeToArray(favoriteRecipes, recipe);
+      addRecipeToArray(currentUser.recipesToCook, recipe);
     } else {
       heartContainer.innerHTML = heartOff;
-      removeRecipeFromArray(favoriteRecipes, recipe);
+      removeRecipeFromArray(currentUser.recipesToCook, recipe);
     }
   } else {
     main.innerHTML = "";
@@ -132,13 +127,13 @@ function createRecipeHTML(recipe) {
   article.classList.add("recipe-card");
   article.dataset.id = recipe.id;
 
-  const heartIcon = isRecipeFavorited(recipe, favoriteRecipes)
+  const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? heartOn
     : heartOff;
 
-  isRecipeFavorited(recipe, favoriteRecipes)
-    ? addRecipeToArray(favoriteRecipes, recipe)
-    : removeRecipeFromArray(favoriteRecipes, recipe);
+  isRecipeFavorited(recipe, currentUser.recipesToCook)
+    ? addRecipeToArray(currentUser.recipesToCook, recipe)
+    : removeRecipeFromArray(currentUser.recipesToCook, recipe);
 
   article.innerHTML = `
     <div class="recipe-image">
@@ -183,7 +178,7 @@ function createRecipePageHTML(recipe) {
     })
     .join("");
 
-  const heartIcon = isRecipeFavorited(recipe, favoriteRecipes)
+  const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? heartOn
     : heartOff;
 
@@ -211,7 +206,7 @@ function createRecipePageHTML(recipe) {
 
   const heartContainer = recipeContainer.querySelector(".heart-container");
   heartContainer.addEventListener("click", (e) =>
-    toggleHeart(e.currentTarget, recipe, favoriteRecipes)
+    toggleHeart(e.currentTarget, recipe, currentUser.recipesToCook)
   );
 
   return recipeContainer;

@@ -7,10 +7,7 @@ import "./styles.css";
 // // Below are examples of how you can import functions from either the recipes or domUpdates files.
 
 // all the favorite recipes should be stored as recipe objects here
-export const favoriteRecipes = [];
-global.favoriteRecipes = favoriteRecipes;
 export let currentUser;
-global.currentUser = currentUser;
 
 export function getRandomUser(user_dataset) {
   return user_dataset[randomNumber(user_dataset.length)];
