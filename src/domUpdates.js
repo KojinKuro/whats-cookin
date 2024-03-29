@@ -1,4 +1,5 @@
 import { filterRecipeByTag, getTagRecipeCount } from "../src/tags";
+import { calculateRecipeCost } from "./cost";
 import ingredientsData from "./data/ingredients";
 import recipeData from "./data/recipes";
 import {
@@ -10,8 +11,7 @@ import {
   isRecipeFavorited,
   removeRecipeFromArray,
 } from "./recipes";
-import { favoriteRecipes } from "./scripts";
-import { currentUser } from "./scripts";
+import { currentUser, favoriteRecipes } from "./scripts";
 import { search } from "./search";
 
 let recipesToDisplay = recipeData;
@@ -191,6 +191,7 @@ function createRecipePageHTML(recipe) {
       <h1 class="gatile">Ingredients</h1>
       <div class="heart-container">${heartIcon}</div>
     </div>
+    <div>$${calculateRecipeCost(recipe, ingredientsData)}</div>
     <hr />
     <ul class="ingredients">${ingredientQuantityHTML}</ul>
   </div>`;
