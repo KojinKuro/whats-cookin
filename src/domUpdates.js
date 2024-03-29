@@ -219,6 +219,12 @@ function createRecipePageHTML(recipe) {
     toggleHeart(heartIcon, recipe, favoriteRecipes);
   });
 
+  heartContainer.appendChild(heartIcon);
+
+  heartIcon.addEventListener("click", () => {
+    toggleHeart(heartIcon, recipe, favoriteRecipes);
+  });
+
   recipeContainer.innerHTML = `
     <div class="recipe-main">
       <div class="image-container">
@@ -232,20 +238,14 @@ function createRecipePageHTML(recipe) {
       <h1 class="gatile">Instructions</h1>
       <ol>${instructionsList}</ol>
     </div>
-  </div>
-  <div class="instructions">
-    <h1 class="gatile">Instructions</h1>
-    <ol>${instructionsList}</ol>
-  </div>
-  <div class="ingredients-container">
-    <div class="ingredients-and-heart">
-      <h1 class="gatile">Ingredients</h1>
-      <div class="heart-container">${heartIcon}</div>
-    </div>
-    <div>$${calculateRecipeCost(recipe, ingredientsData)}</div>
-    <hr />
-    <ul class="ingredients">${ingredientQuantityHTML}</ul>
-  </div>`;
+    <div class="ingredients-container">
+      <div class="ingredients-and-heart">
+        <h1 class="gatile">Ingredients</h1>
+      </div>
+      <div>$${calculateRecipeCost(recipe, ingredientsData)}</div>
+      <hr />
+      <ul class="ingredients">${ingredientQuantityHTML}</ul>
+    </div>`;
 
   const ingredientsAndHeart = recipeContainer.querySelector(
     ".ingredients-and-heart"
