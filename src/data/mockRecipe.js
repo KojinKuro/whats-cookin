@@ -1,4 +1,4 @@
-export const recipe1 = {
+const recipe1 = {
   id: 595736,
   image: "https://spoonacular.com/recipeImages/595736-556x370.jpg",
   ingredients: [
@@ -122,7 +122,7 @@ export const recipe1 = {
   ],
 };
 
-export const recipe2 = {
+const recipe2 = {
   id: 541288,
   image: "https://spoonacular.com/recipeImages/541288-556x370.jpg",
   ingredients: [
@@ -218,3 +218,243 @@ export const recipe2 = {
     "hor d'oeuvre",
   ],
 };
+
+const recipe3 = {
+  id: 412309,
+  image: "https://spoonacular.com/recipeImages/412309-556x370.jpeg",
+  ingredients: [
+    {
+      id: 1002030,
+      quantity: {
+        amount: 4,
+        unit: "teaspoons",
+      },
+    },
+    {
+      id: 19334,
+      quantity: {
+        amount: 8,
+        unit: "tablespoons",
+      },
+    },
+    {
+      id: 1001,
+      quantity: {
+        amount: 2,
+        unit: "cups",
+      },
+    },
+    {
+      id: 4582,
+      quantity: {
+        amount: 4,
+        unit: "servings",
+      },
+    },
+    {
+      id: 2031,
+      quantity: {
+        amount: 4,
+        unit: "teaspoons",
+      },
+    },
+    {
+      id: 5100,
+      quantity: {
+        amount: 1,
+        unit: "pound",
+      },
+    },
+    {
+      id: 2009,
+      quantity: {
+        amount: 4,
+        unit: "teaspoons",
+      },
+    },
+    {
+      id: 1022020,
+      quantity: {
+        amount: 4,
+        unit: "teaspoons",
+      },
+    },
+    {
+      id: 6168,
+      quantity: {
+        amount: 8,
+        unit: "cups",
+      },
+    },
+    {
+      id: 9176,
+      quantity: {
+        amount: 0.5,
+        unit: "cup",
+      },
+    },
+    {
+      id: 2026,
+      quantity: {
+        amount: 4,
+        unit: "teaspoons",
+      },
+    },
+    {
+      id: 1042047,
+      quantity: {
+        amount: 1.5,
+        unit: "tablespoons",
+      },
+    },
+    {
+      id: 1042047,
+      quantity: {
+        amount: 4,
+        unit: "teaspoons",
+      },
+    },
+  ],
+  instructions: [
+    {
+      instruction:
+        "Mix the hot sauce, butter, mango habanero sauce, brown sugar, chili powder, garlic powder, onion powder, black pepper, cayenne pepper and seasoning salt in a bowl. Stir vigorously until completely combined.",
+      number: 1,
+    },
+  ],
+  name: "Dirty Steve's Original Wing Sauce",
+  tags: ["sauce"],
+};
+
+const recipe4 = {
+  id: 741603,
+  image: "https://spoonacular.com/recipeImages/741603-556x370.jpeg",
+  ingredients: [
+    {
+      id: 20081,
+      quantity: {
+        amount: 1,
+        unit: "cup",
+      },
+    },
+    {
+      id: 18371,
+      quantity: {
+        amount: 2,
+        unit: "teaspoons",
+      },
+    },
+    {
+      id: 9040,
+      quantity: {
+        amount: 12,
+        unit: "servings",
+      },
+    },
+    {
+      id: 20011,
+      quantity: {
+        amount: 1,
+        unit: "cup",
+      },
+    },
+    {
+      id: 1001,
+      quantity: {
+        amount: 2,
+        unit: "tablespoons",
+      },
+    },
+    {
+      id: 1001,
+      quantity: {
+        amount: 6,
+        unit: "tablespoons",
+      },
+    },
+    {
+      id: 1230,
+      quantity: {
+        amount: 2,
+        unit: "cups",
+      },
+    },
+    {
+      id: 1123,
+      quantity: {
+        amount: 2,
+        unit: "",
+      },
+    },
+    {
+      id: 19296,
+      quantity: {
+        amount: 12,
+        unit: "servings",
+      },
+    },
+    {
+      id: 16098,
+      quantity: {
+        amount: 12,
+        unit: "servings",
+      },
+    },
+    {
+      id: 2047,
+      quantity: {
+        amount: 1,
+        unit: "teaspoon",
+      },
+    },
+    {
+      id: 19335,
+      quantity: {
+        amount: 2,
+        unit: "teaspoons",
+      },
+    },
+  ],
+  instructions: [
+    {
+      instruction: "Watch how to make this recipe.",
+      number: 1,
+    },
+    {
+      instruction:
+        "In a large bowl, whisk together buttermilk, eggs, baking powder, sugar, salt and butter.",
+      number: 2,
+    },
+    {
+      instruction:
+        "In another large bowl mix together all-purpose flour and buckwheat flour.",
+      number: 3,
+    },
+    {
+      instruction:
+        "Slowly add flour into the wet ingredients mixing with a whisk.",
+      number: 4,
+    },
+    {
+      instruction:
+        "Mix until there are no lumps and the batter is smooth and velvety.",
+      number: 5,
+    },
+    {
+      instruction:
+        "In a large cast iron skillet or flat grill pan over medium-high heat, melt a tablespoon of butter. Ladle pancake batter onto skillet to desired size. Using the ladle, form pancake into circular shape. Cook on each side for 2 to 3 minutes or until golden brown. Set pancakes aside and keep warm. Repeat with remaining ingredients.",
+      number: 6,
+    },
+    {
+      instruction:
+        "Once completed, spread peanut butter on a pancake, layer it with sliced bananas and drizzle it with honey. Top the pancake with another pancake to form a sandwich. Repeat with remaining pancakes and serve with extra honey.",
+      number: 7,
+    },
+  ],
+  name: "Elvis Pancakes",
+  tags: ["side dish"],
+};
+
+const mockRecipeDataset = [recipe1, recipe2, recipe3, recipe4];
+
+export { mockRecipeDataset, recipe1, recipe2, recipe3, recipe4 };
