@@ -33,6 +33,7 @@ function fetchRecipes() {
     .catch((error) => console.log(error));
 }
 
+// fix this because I don't like how this is not really the init function but it also kind of is at the same time
 export function fetchData() {
   Promise.all([fetchUser(), fetchIngredients(), fetchRecipes()]).then(
     ([user, ingredient, recipes]) => {
