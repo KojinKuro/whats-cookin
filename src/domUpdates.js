@@ -122,7 +122,7 @@ export function init() {
   logo.innerText += ` ${currentUser.name}`;
 }
 
-const loadMoreRecipes = (function () {
+const infiniteLoad = (function () {
   let currentPage = 1;
   const recipesPerPage = 5;
 
@@ -149,7 +149,7 @@ const loadMoreRecipes = (function () {
 
 function displayRecipes(recipe_dataset) {
   mainDirectory.innerHTML = "";
-  loadMoreRecipes(recipe_dataset);
+  infiniteLoad(recipe_dataset);
 }
 
 function createSentinelHTML() {
@@ -310,12 +310,10 @@ function filterRecipes() {
 
 function displaySavedRecipes(recipes) {
   main.innerHTML = "";
+  viewChanged = true;
 
   if (recipes && recipes.length > 0) {
-    recipes.forEach((recipe) => {
-      const recipeHTML = createRecipeHTML(recipe);
-      main.appendChild(recipeHTML);
-    });
+    infiniteLoad(recipes);
   } else {
     main.innerHTML =
       '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No saved recipes found.</div>';
