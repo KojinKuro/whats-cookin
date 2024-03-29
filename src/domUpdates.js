@@ -85,7 +85,7 @@ cookbookButton.addEventListener("click", function () {
   recipesToDisplay = recipesAPIData;
 
   displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesAPIData);
+  updateTagsToDOM(recipesToDisplay);
 
   main.setAttribute("id", "directory-page");
   filterSection.classList.remove("hidden");
@@ -265,11 +265,11 @@ function getActiveTags() {
 
 function updateTagsToDOM(recipes) {
   const activeTags = getActiveTags();
-  const tagRecipeCount = getTagRecipeCount(activeTags, recipesAPIData);
+  const tagRecipeCount = getTagRecipeCount(activeTags, recipes);
   const tagNames = Object.keys(tagRecipeCount);
 
   tagsContainer.innerHTML = "";
-  Object.keys(tagRecipeCount).forEach((tagName) => {
+  tagNames.forEach((tagName) => {
     const button = document.createElement("button");
     button.className = "tag";
     button.dataset.tag = tagName;
@@ -305,6 +305,7 @@ function filterRecipes() {
   );
   viewChanged = true;
   displayRecipes(recipesToDisplay);
+  updateTagsToDOM(recipesToDisplay);
 }
 
 function displaySavedRecipes(recipes) {
