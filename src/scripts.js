@@ -2,11 +2,10 @@
 
 import "./apiCalls";
 import "./styles.css";
-// // An example of how you tell webpack to use an image (also need to link to it in the index.html)
-// import "./images/turing-logo.png";
-// // Below are examples of how you can import functions from either the recipes or domUpdates files.
+// An example of how you tell webpack to use an image (also need to link to it in the index.html)
+import "./images/turing-logo.png";
+// Below are examples of how you can import functions from either the recipes or domUpdates files.
 
-// all the favorite recipes should be stored as recipe objects here
 export let currentUser;
 
 export function getRandomUser(user_dataset) {
