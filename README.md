@@ -21,7 +21,7 @@ Server URL: `localhost:8080`
 Test Suite: `npm run test`
 
 ## Media
-
+![Test](https://i.ibb.co/0j8tws3/Kapture-2024-03-31-at-15-09-45.gif)
 
 ## Features
 
