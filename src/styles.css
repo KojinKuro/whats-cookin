@@ -188,6 +188,17 @@ main#recipe-page {
     width: 1000px;
   }
 
+  .ingredients-and-heart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .heart-container {
+    height: 30px;
+    width: 30px;
+  }
+
   .gatile {
     font-family: "Gatile";
   }
