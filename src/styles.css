@@ -78,8 +78,37 @@ nav.filter-container {
   }
   .search-box {
     border: none;
-    border-radius: 4px;
+    border-radius: 15px;
     height: 30px;
+    padding-left: 15px;
+    font-size: 1rem;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .tags-container {
+    .tag {
+      background-color: #9d968b;
+      font-size: 0.95rem;
+      margin-right: 5px;
+      margin-bottom: 3px;
+    }
+  }
+
+  .random-recipe {
+    background-color: #d39738;
+    color: white;
+    font-size: 1.25rem;
+    padding: 10px;
+  }
+
+  .tag,
+  .random-recipe {
+    font-family: sans-serif;
+    border: none;
+    border-radius: 4px;
   }
 }
 
@@ -151,23 +180,14 @@ main#directory-page {
   }
 }
 
-.tag,
-.random-recipe {
-  font-family: sans-serif;
-  background-color: grey;
-  color: #2d2b2b;
-  border-radius: 4px;
-  border: none;
-  transition: background-color 0.3s;
-}
-
 .sentinel {
   position: relative;
   height: 1px;
 }
 
 .tag-active {
-  background-color: #d39738;
+  color: white !important;
+  background-color: #d39738 !important;
 }
 
 .tag-inactive {
@@ -246,6 +266,12 @@ main#recipe-page {
     }
   }
 
+  .ingredient-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .ingredients-container {
     background-color: #fff2e1;
     padding: 20px;
@@ -272,4 +298,67 @@ main#recipe-page {
       color: rgb(150, 150, 150);
     }
   }
+}
+
+/* SLIDER BUTTON CODE */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox  */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

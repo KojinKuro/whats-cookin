@@ -5,8 +5,6 @@ import {
   recipesAPIData,
   usersAPIData,
 } from "./apiCalls";
-// import ingredientsData from "./data/ingredients";
-// import recipeData from "./data/recipes";
 import { calculateRecipeCost } from "./cost";
 import {
   addRecipeToArray,
@@ -17,7 +15,16 @@ import {
   isRecipeFavorited,
   removeRecipeFromArray,
 } from "./recipes";
-import { currentUser, getRandomUser, setCurrentUser } from "./scripts";
+import {
+  convertToUS,
+  currentRecipe,
+  currentUser,
+  getRandomUser,
+  randomNumber,
+  setCurrentRecipe,
+  setCurrentUser,
+  toggleConversion,
+} from "./scripts";
 import { search } from "./search";
 
 let recipesToDisplay;
@@ -25,15 +32,17 @@ let viewChanged = false;
 let isSavedRecipesView = false;
 
 const logo = document.querySelector(".logo");
-const tagsContainer = document.querySelector(".tags-container");
+// main view query selectors
 const main = document.querySelector("main");
 const mainDirectory = document.getElementById("directory-page");
 const mainRecipe = document.getElementById("recipe-page");
+// Filter query selectors
 const filterSection = document.querySelector("nav.filter-container");
 const searchBox = document.querySelector(".search-box");
-const cookbookButton = document.querySelector(".cookbook");
-const savedRecipesButton = document.querySelector(".saved-recipes");
-const randomRecipeButton = document.querySelector(".random-recipe")
+const tagsContainer = document.querySelector(".tags-container");
+// changing view query selectors
+const navButtonContainer = document.querySelector(".nav-buttons");
+const randomRecipeButton = document.querySelector(".random-recipe");
 
 const heartOn =
   '<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: #b30202;transform: ;msFilter:;"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>';
@@ -48,79 +57,84 @@ tagsContainer.addEventListener("click", function (e) {
   e.target.classList.toggle("tag-active");
   filterRecipes();
 });
-
 mainDirectory.addEventListener("scroll", () => {
-  if (isSentinelInView()) displayRecipes(recipesToDisplay);
+  if (isSentinelInView()) displayRecipeCards(recipesToDisplay);
 });
+main.addEventListener("click", (e) => {
+  switch (main.getAttribute("id")) {
+    case "directory-page":
+      if (!e.target.closest(".recipe-card")) return;
 
-mainDirectory.addEventListener("click", (e) => {
-  if (!e.target.closest(".recipe-card")) return;
-  const clickedRecipe = e.target.closest(".recipe-card");
-  const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
-  if (e.target.closest(".heart-container")) {
-    const heartContainer = e.target.closest(".heart-container");
-    heartContainer.innerHTML = "";
-    if (!isRecipeFavorited(recipe, currentUser.recipesToCook)) {
-      heartContainer.innerHTML = heartOn;
-      addRecipeToArray(currentUser.recipesToCook, recipe);
-    } else {
-      heartContainer.innerHTML = heartOff;
-      removeRecipeFromArray(currentUser.recipesToCook, recipe);
-    }
-  } else {
-    main.innerHTML = "";
-    main.append(createRecipePageHTML(recipe));
-    main.setAttribute("id", "recipe-page");
-    filterSection.classList.add("hidden");
+      const clickedRecipe = e.target.closest(".recipe-card");
+      const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
+      setCurrentRecipe(recipe);
+
+      if (e.target.closest(".heart-container")) {
+        toggleHeart(
+          e.target.closest(".heart-container"),
+          currentRecipe,
+          currentUser.recipesToCook
+        );
+      } else {
+        main.innerHTML = "";
+        main.append(createRecipePageHTML(currentRecipe));
+        main.setAttribute("id", "recipe-page");
+        filterSection.classList.add("hidden");
+      }
+      break;
+    case "recipe-page":
+      if (e.target.classList.contains("conversion-slider")) {
+        toggleConversion();
+        const ingredientsContainer = document.querySelector(".ingredients");
+        ingredientsContainer.innerHTML = `${getIngredientQuantity(
+          currentRecipe,
+          ingredientsAPIData
+        )}`;
+      } else if (e.target.closest(".heart-container")) {
+        toggleHeart(
+          e.target.closest(".heart-container"),
+          currentRecipe,
+          currentUser.recipesToCook
+        );
+      }
+      break;
   }
 });
-randomRecipeButton.addEventListener('click', displayRandomRecipe)
+randomRecipeButton.addEventListener("click", () => {
+  const randomIndex = randomNumber(recipesAPIData.length);
+  const randomRecipe = recipesAPIData[randomIndex];
 
-cookbookButton.addEventListener("click", function () {
-  isSavedRecipesView = false;
-  mainDirectory.innerHTML = "";
-  searchBox.value = "";
-
-  const activeTags = tagsContainer.querySelectorAll(".tag-active");
-  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
-
-  recipesToDisplay = recipesAPIData;
-
-  displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesToDisplay);
-
-  main.setAttribute("id", "directory-page");
-  filterSection.classList.remove("hidden");
-
-  mainDirectory.scrollTop = 0;
+  main.innerHTML = "";
+  main.append(createRecipePageHTML(randomRecipe));
+  main.setAttribute("id", "recipe-page");
+  filterSection.classList.add("hidden");
 });
 
-savedRecipesButton.addEventListener("click", function () {
-  isSavedRecipesView = true;
-  main.innerHTML = "";
-  main.setAttribute("id", "directory-page");
+navButtonContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("cookbook")) {
+    isSavedRecipesView = false;
+    recipesToDisplay = recipesAPIData;
+  } else if (e.target.classList.contains("saved-recipes")) {
+    isSavedRecipesView = true;
+    recipesToDisplay = currentUser.recipesToCook;
+  } else {
+    return;
+  }
 
+  viewChanged = true;
   filterSection.classList.remove("hidden");
-  searchBox.value = "";
-
-  const activeTags = tagsContainer.querySelectorAll(".tag-active");
-  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
-
-  recipesToDisplay = currentUser.recipesToCook;
-
-  displaySavedRecipes(recipesToDisplay);
-  updateTagsToDOM(currentUser.recipesToCook);
-
-  mainDirectory.scrollTop = 0;
+  mainDirectory.innerHTML = "";
+  main.setAttribute("id", "directory-page");
+  displayRecipeCards(recipesToDisplay);
+  resetFilters(recipesToDisplay);
 });
 
 // FUNCTIONS
 export function init() {
   setCurrentUser(getRandomUser(usersAPIData));
-
   recipesToDisplay = recipesAPIData;
-  displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesToDisplay);
+  displayRecipeCards(recipesToDisplay);
+  updateTags(recipesToDisplay);
   logo.innerText += ` ${currentUser.name}`;
 }
 
@@ -149,7 +163,20 @@ const infiniteLoad = (function () {
   };
 })();
 
-function displayRecipes(recipe_dataset) {
+function resetFilters(recipe_dataset) {
+  searchBox.value = "";
+  const activeTags = tagsContainer.querySelectorAll(".tag-active");
+  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
+  updateTags(recipe_dataset);
+}
+
+function displayRecipeCards(recipe_dataset) {
+  if (!recipe_dataset || !recipe_dataset.length) {
+    mainDirectory.innerHTML =
+      '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No recipes found.</div>';
+    return;
+  }
+
   mainDirectory.innerHTML = "";
   infiniteLoad(recipe_dataset);
 }
@@ -205,18 +232,11 @@ function createRecipePageHTML(recipe) {
     ""
   );
 
-  const ingredientList = findRecipeIngredients(recipe, ingredientsAPIData);
-  const quantityList = findRecipeIngredientsQuantity(recipe);
-
-  let ingredientQuantityHTML = ingredientList
-    .map((ingredient, index) => {
-      return `<li><div class="ingredient-name">${ingredient}</div><div class="ingredient-amount">${quantityList[index]}</div></li>`;
-    })
-    .join("");
-
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? heartOn
     : heartOff;
+
+  const checkboxChecked = convertToUS ? "" : "checked";
 
   recipeContainer.innerHTML = `
     <div class="recipe-main">
@@ -236,22 +256,38 @@ function createRecipePageHTML(recipe) {
         <h1 class="gatile">Ingredients</h1>
         <div class="heart-container">${heartIcon}</div>
       </div>
-      <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
+      
+      <div class="ingredient-settings">
+        <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
+        <label class="switch">
+          <input type="checkbox" ${checkboxChecked} class="conversion-slider">
+          <span class="slider round"></span>
+        </label>
+      </div>
       <hr />
-      <ul class="ingredients">${ingredientQuantityHTML}</ul>
+      <ul class="ingredients">${getIngredientQuantity(
+        recipe,
+        ingredientsAPIData
+      )}</ul>
     </div>`;
-
-  recipeContainer
-    .querySelector(".heart-container")
-    .addEventListener("click", (e) => {
-      toggleHeart(e.currentTarget, recipe, currentUser.recipesToCook);
-    });
 
   return recipeContainer;
 }
 
+function getIngredientQuantity(recipe, ingredient_dataset) {
+  const ingredientList = findRecipeIngredients(recipe, ingredient_dataset);
+  const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
+
+  return ingredientList
+    .map((ingredient, index) => {
+      return `<li><div class="ingredient-name">${ingredient}</div><div class="ingredient-amount">${quantityList[index]}</div></li>`;
+    })
+    .join("");
+}
+
 function toggleHeart(element, recipe, recipe_dataset) {
-  if (!isRecipeFavorited(recipe, recipe_dataset)) {
+  const isFavorited = isRecipeFavorited(recipe, recipe_dataset);
+  if (!isFavorited) {
     element.innerHTML = heartOn;
     addRecipeToArray(recipe_dataset, recipe);
   } else {
@@ -265,7 +301,7 @@ function getActiveTags() {
   return Array.from(activeTags).map((button) => button.dataset.tag);
 }
 
-function updateTagsToDOM(recipes) {
+function updateTags(recipes) {
   const activeTags = getActiveTags();
   const tagRecipeCount = getTagRecipeCount(activeTags, recipes);
   const tagNames = Object.keys(tagRecipeCount);
@@ -276,9 +312,8 @@ function updateTagsToDOM(recipes) {
     button.className = "tag";
     button.dataset.tag = tagName;
     button.textContent = `${tagName} (${tagRecipeCount[tagName]})`;
-    if (activeTags.includes(tagName)) {
-      button.classList.add("tag-active");
-    }
+
+    if (activeTags.includes(tagName)) button.classList.add("tag-active");
     tagsContainer.appendChild(button);
   });
 }
@@ -291,52 +326,20 @@ function isSentinelInView() {
 }
 
 function filterRecipes() {
-  let filteredRecipes;
-  if (isSavedRecipesView) {
-    filteredRecipes = filterRecipeByTag(
-      getActiveTags(),
-      currentUser.recipesToCook
-    );
-  } else {
-    filteredRecipes = filterRecipeByTag(getActiveTags(), recipesAPIData);
-  }
+  viewChanged = true;
+  const recipe_dataset = isSavedRecipesView
+    ? currentUser.recipesToCook
+    : recipesAPIData;
+  let filteredRecipes = filterRecipeByTag(getActiveTags(), recipe_dataset);
+
   recipesToDisplay = search(
     searchBox.value.trim(),
     filteredRecipes,
     ingredientsAPIData
   );
-  viewChanged = true;
-  displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesToDisplay);
+
+  displayRecipeCards(recipesToDisplay);
+  updateTags(recipesToDisplay);
 }
 
-function displaySavedRecipes(recipes) {
-  main.innerHTML = "";
-  viewChanged = true;
-
-  if (recipes && recipes.length > 0) {
-    infiniteLoad(recipes);
-  } else {
-    main.innerHTML =
-      '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No saved recipes found.</div>';
-  }
-}
-
-function displayRandomRecipe() {
-  const randomIndex = Math.floor(Math.random() * recipeData.length);
-  const randomRecipe = recipeData[randomIndex];
-
-  main.innerHTML = "";
-  main.append(createRecipePageHTML(randomRecipe));
-  main.setAttribute("id", "recipe-page");
-  filterSection.classList.add("hidden");
-
-  const heartContainer = document.querySelector(".heart-container");
-
-  heartContainer.addEventListener("click", () => {
-    const heartIcon = heartContainer.querySelector(".heart");
-    toggleHeart(heartIcon, randomRecipe, favoriteRecipes);
-  });
-}
-
-export { displayRecipes };
+export { displayRecipeCards as displayRecipes };
