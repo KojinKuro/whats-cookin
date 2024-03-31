@@ -31,6 +31,7 @@ let recipesToDisplay;
 let viewChanged = false;
 let isSavedRecipesView = false;
 
+const body = document.querySelector("body");
 const logo = document.querySelector(".logo");
 // main view query selectors
 const main = document.querySelector("main");
@@ -80,6 +81,7 @@ main.addEventListener("click", (e) => {
         main.append(createRecipePageHTML(currentRecipe));
         main.setAttribute("id", "recipe-page");
         filterSection.classList.add("hidden");
+        body.style.cssText = "--sidebar-width: 0px";
       }
       break;
     case "recipe-page":
@@ -108,6 +110,7 @@ randomRecipeButton.addEventListener("click", () => {
   main.append(createRecipePageHTML(randomRecipe));
   main.setAttribute("id", "recipe-page");
   filterSection.classList.add("hidden");
+  body.style.cssText = "--sidebar-width: 0px";
 });
 
 navButtonContainer.addEventListener("click", (e) => {
@@ -123,6 +126,8 @@ navButtonContainer.addEventListener("click", (e) => {
 
   viewChanged = true;
   filterSection.classList.remove("hidden");
+  body.style.cssText = "--sidebar-width: 300px";
+
   mainDirectory.innerHTML = "";
   main.setAttribute("id", "directory-page");
   displayRecipeCards(recipesToDisplay);
@@ -252,23 +257,24 @@ function createRecipePageHTML(recipe) {
       <ol>${instructionsList}</ol>
     </div>
     <div class="ingredients-container">
-      <div class="ingredients-and-heart">
-        <h1 class="gatile">Ingredients</h1>
-        <div class="heart-container">${heartIcon}</div>
-      </div>
-      
-      <div class="ingredient-settings">
+      <div class="ingredients-background">
+        <div class="ingredients-and-heart">
+          <h1 class="gatile">Ingredients</h1>
+          <div class="heart-container">${heartIcon}</div>
+        </div>
+        <div class="ingredient-settings">
         <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
-        <label class="switch">
-          <input type="checkbox" ${checkboxChecked} class="conversion-slider">
-          <span class="slider round"></span>
-        </label>
+          <label class="switch">
+            <input type="checkbox" ${checkboxChecked} class="conversion-slider">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <hr />
+        <ul class="ingredients">${getIngredientQuantity(
+          recipe,
+          ingredientsAPIData
+        )}</ul>
       </div>
-      <hr />
-      <ul class="ingredients">${getIngredientQuantity(
-        recipe,
-        ingredientsAPIData
-      )}</ul>
     </div>`;
 
   return recipeContainer;
