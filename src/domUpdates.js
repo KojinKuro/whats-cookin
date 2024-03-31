@@ -32,15 +32,18 @@ let viewChanged = false;
 let isSavedRecipesView = false;
 
 const logo = document.querySelector(".logo");
-const tagsContainer = document.querySelector(".tags-container");
+// main view query selectors
 const main = document.querySelector("main");
-
 const mainDirectory = document.getElementById("directory-page");
 const mainRecipe = document.getElementById("recipe-page");
+// Filter query selectors
 const filterSection = document.querySelector("nav.filter-container");
 const searchBox = document.querySelector(".search-box");
-const cookbookButton = document.querySelector(".cookbook");
-const savedRecipesButton = document.querySelector(".saved-recipes");
+const tagsContainer = document.querySelector(".tags-container");
+// changing view query selectors
+const navButtonContainer = document.querySelector(".nav-buttons");
+// const cookbookButton = document.querySelector(".cookbook");
+// const savedRecipesButton = document.querySelector(".saved-recipes");
 const randomRecipeButton = document.querySelector(".random-recipe");
 
 const heartOn =
@@ -56,7 +59,6 @@ tagsContainer.addEventListener("click", function (e) {
   e.target.classList.toggle("tag-active");
   filterRecipes();
 });
-
 mainDirectory.addEventListener("scroll", () => {
   if (isSentinelInView()) displayRecipeCards(recipesToDisplay);
 });
@@ -110,51 +112,27 @@ randomRecipeButton.addEventListener("click", () => {
   filterSection.classList.add("hidden");
 });
 
-cookbookButton.addEventListener("click", function () {
-  isSavedRecipesView = false;
+navButtonContainer.addEventListener("click", (e) => {
+  if (e.target.classList.contains("cookbook")) {
+    isSavedRecipesView = false;
+    recipesToDisplay = recipesAPIData;
+  } else if (e.target.classList.contains("saved-recipes")) {
+    isSavedRecipesView = true;
+    recipesToDisplay = currentUser.recipesToCook;
+  }
+
+  resetFilters();
   viewChanged = true;
   mainDirectory.innerHTML = "";
-  searchBox.value = "";
-
-  const activeTags = tagsContainer.querySelectorAll(".tag-active");
-  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
-
-  recipesToDisplay = recipesAPIData;
-
+  main.setAttribute("id", "directory-page");
+  filterSection.classList.remove("hidden");
   displayRecipeCards(recipesToDisplay);
   updateTags(recipesToDisplay);
-
-  main.setAttribute("id", "directory-page");
-  filterSection.classList.remove("hidden");
-
-  mainDirectory.scrollTop = 0;
-});
-
-savedRecipesButton.addEventListener("click", function () {
-  isSavedRecipesView = true;
-  viewChanged = true;
-
-  main.innerHTML = "";
-  main.setAttribute("id", "directory-page");
-
-  filterSection.classList.remove("hidden");
-  searchBox.value = "";
-
-  const activeTags = tagsContainer.querySelectorAll(".tag-active");
-  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
-
-  recipesToDisplay = currentUser.recipesToCook;
-
-  displayRecipeCards(recipesToDisplay);
-  updateTags(currentUser.recipesToCook);
-
-  mainDirectory.scrollTop = 0;
 });
 
 // FUNCTIONS
 export function init() {
   setCurrentUser(getRandomUser(usersAPIData));
-
   recipesToDisplay = recipesAPIData;
   displayRecipeCards(recipesToDisplay);
   updateTags(recipesToDisplay);
@@ -185,6 +163,12 @@ const infiniteLoad = (function () {
     mainDirectory.append(createSentinelHTML());
   };
 })();
+
+function resetFilters() {
+  searchBox.value = "";
+  const activeTags = tagsContainer.querySelectorAll(".tag-active");
+  activeTags.forEach((tag) => tag.classList.remove("tag-active"));
+}
 
 function displayRecipeCards(recipe_dataset) {
   if (!recipe_dataset || !recipe_dataset.length) {
@@ -341,6 +325,7 @@ function isSentinelInView() {
 }
 
 function filterRecipes() {
+  viewChanged = true;
   const recipe_dataset = isSavedRecipesView
     ? currentUser.recipesToCook
     : recipesAPIData;
@@ -351,7 +336,7 @@ function filterRecipes() {
     filteredRecipes,
     ingredientsAPIData
   );
-  viewChanged = true;
+
   displayRecipeCards(recipesToDisplay);
   updateTags(recipesToDisplay);
 }
