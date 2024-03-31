@@ -1,4 +1,3 @@
-import recipeData from "./data/recipes";
 import { findRecipeIngredients } from "./recipes";
 
 export function search(searchQuery, recipe_dataset, ingredient_dataset) {
