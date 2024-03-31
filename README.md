@@ -8,6 +8,9 @@ This project was created by [Charles Kwang](https://github.com/KojinKuro), [Ben 
 
 Welcome to What's Cookin'! With this website, you can search through our recipe database using featured tags, a search box, and manually using our infinite scroll feature. Tired of losing recipes? Use our "like" button to save your favorite recipes.  This project was created to practice API calls, following TDD, and working on creating a complex web application in a team environment. We used Javascript, HTML, CSS for the core technologies with Mocha & Chai for our test suite.
 
+## Preview
+![Kapture 2024-03-31 at 15 27 42](https://github.com/KojinKuro/whats-cookin/assets/11234292/b0ab4c26-22ed-4dc6-9082-ff1029c1c494)
+
 ## Installation & Setup
 
 ```
@@ -19,9 +22,6 @@ npm run start
 Server URL: `localhost:8080`
 
 Test Suite: `npm run test`
-
-## Media
-![Test](https://i.ibb.co/0j8tws3/Kapture-2024-03-31-at-15-09-45.gif)
 
 ## Features
 
