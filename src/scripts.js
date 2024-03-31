@@ -14,7 +14,7 @@ export function getRandomUser(user_dataset) {
   return user_dataset[randomNumber(user_dataset.length)];
 }
 
-function randomNumber(max) {
+export function randomNumber(max) {
   return Math.floor(Math.random() * max);
 }
 
