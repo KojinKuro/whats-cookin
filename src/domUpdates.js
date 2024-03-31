@@ -286,7 +286,8 @@ function getIngredientQuantity(recipe, ingredient_dataset) {
 }
 
 function toggleHeart(element, recipe, recipe_dataset) {
-  if (!isRecipeFavorited(recipe, recipe_dataset)) {
+  const isFavorited = isRecipeFavorited(recipe, recipe_dataset);
+  if (!isFavorited) {
     element.innerHTML = heartOn;
     addRecipeToArray(recipe_dataset, recipe);
   } else {
