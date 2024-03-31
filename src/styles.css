@@ -175,7 +175,8 @@ main#directory-page {
   .recipe-image {
     object-fit: cover;
     overflow: hidden;
-    border-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
     mask-image: linear-gradient(
       to right,
       rgba(0, 0, 0, 1),
@@ -344,11 +345,11 @@ main#recipe-page {
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #d39738;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px #d39738;
 }
 
 input:checked + .slider:before {
