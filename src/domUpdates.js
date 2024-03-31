@@ -180,9 +180,8 @@ function displayRecipeCards(recipe_dataset) {
     mainDirectory.style.justifyContent = "center";
     mainDirectory.innerHTML =
       '<div class="gatile" style="text-align: center; font-size: 5vh">No recipes found.</div>';
-    return;
   } else {
-    mainDirectory.style.justifyContent = "center";
+    mainDirectory.style.justifyContent = null;
     mainDirectory.innerHTML = "";
     infiniteLoad(recipe_dataset);
   }
