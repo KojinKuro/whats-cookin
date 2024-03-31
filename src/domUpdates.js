@@ -117,6 +117,8 @@ navButtonContainer.addEventListener("click", (e) => {
   } else if (e.target.classList.contains("saved-recipes")) {
     isSavedRecipesView = true;
     recipesToDisplay = currentUser.recipesToCook;
+  } else {
+    return;
   }
 
   viewChanged = true;
