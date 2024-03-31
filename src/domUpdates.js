@@ -20,6 +20,7 @@ import {
   currentRecipe,
   currentUser,
   getRandomUser,
+  randomNumber,
   setCurrentRecipe,
   setCurrentUser,
   toggleConversion,
@@ -100,11 +101,18 @@ main.addEventListener("click", (e) => {
   }
 });
 randomRecipeButton.addEventListener("click", () => {
-  displayRandomRecipe();
+  const randomIndex = randomNumber(recipesAPIData.length);
+  const randomRecipe = recipesAPIData[randomIndex];
+
+  main.innerHTML = "";
+  main.append(createRecipePageHTML(randomRecipe));
+  main.setAttribute("id", "recipe-page");
+  filterSection.classList.add("hidden");
 });
 
 cookbookButton.addEventListener("click", function () {
   isSavedRecipesView = false;
+  viewChanged = true;
   mainDirectory.innerHTML = "";
   searchBox.value = "";
 
@@ -124,6 +132,8 @@ cookbookButton.addEventListener("click", function () {
 
 savedRecipesButton.addEventListener("click", function () {
   isSavedRecipesView = true;
+  viewChanged = true;
+
   main.innerHTML = "";
   main.setAttribute("id", "directory-page");
 
@@ -135,7 +145,7 @@ savedRecipesButton.addEventListener("click", function () {
 
   recipesToDisplay = currentUser.recipesToCook;
 
-  displaySavedRecipes(recipesToDisplay);
+  displayRecipeCards(recipesToDisplay);
   updateTags(currentUser.recipesToCook);
 
   mainDirectory.scrollTop = 0;
@@ -177,6 +187,12 @@ const infiniteLoad = (function () {
 })();
 
 function displayRecipeCards(recipe_dataset) {
+  if (!recipe_dataset || !recipe_dataset.length) {
+    mainDirectory.innerHTML =
+      '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No recipes found.</div>';
+    return;
+  }
+
   mainDirectory.innerHTML = "";
   infiniteLoad(recipe_dataset);
 }
@@ -338,28 +354,6 @@ function filterRecipes() {
   viewChanged = true;
   displayRecipeCards(recipesToDisplay);
   updateTags(recipesToDisplay);
-}
-
-function displaySavedRecipes(recipes) {
-  main.innerHTML = "";
-  viewChanged = true;
-
-  if (recipes && recipes.length > 0) {
-    infiniteLoad(recipes);
-  } else {
-    main.innerHTML =
-      '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No saved recipes found.</div>';
-  }
-}
-
-function displayRandomRecipe(recipe_dataset) {
-  const randomIndex = Math.floor(Math.random() * recipe_dataset.length);
-  const randomRecipe = recipe_dataset[randomIndex];
-
-  main.innerHTML = "";
-  main.append(createRecipePageHTML(randomRecipe));
-  main.setAttribute("id", "recipe-page");
-  filterSection.classList.add("hidden");
 }
 
 export { displayRecipeCards as displayRecipes };
