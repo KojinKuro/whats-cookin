@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { recipe1, recipe2 } from "../src/data/mockRecipe";
 import { isFavorited } from "../src/recipes";
+import { recipe1, recipe2 } from "./data/mockData";
 
 describe("isFavorited", () => {
   const recipe_dataset = [recipe1, recipe2];
