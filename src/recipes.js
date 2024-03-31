@@ -101,7 +101,6 @@ function ingredientConvertor(amountToConvert, unitToConvert, convertToUS) {
       unit: convertedIngredientBest.unit,
     };
   } catch (error) {
-    console.log(error);
     return {
       amount: amountToConvert,
       unit: unitToConvert,
@@ -149,8 +148,8 @@ export function isFavorited(favoriteRecipes, recipe_dataset) {
   );
 }
 
-export function isRecipeFavorited(recipe, recipe_dataset){
-  return (recipe_dataset.find(currentRecipe => {
-    return currentRecipe.id === recipe.id
-  }))
+export function isRecipeFavorited(recipe, recipe_dataset) {
+  return recipe_dataset.find((currentRecipe) => {
+    return currentRecipe.id === recipe.id;
+  });
 }
