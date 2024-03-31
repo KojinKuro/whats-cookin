@@ -19,9 +19,12 @@ import {
 } from "./recipes";
 import {
   convertToUS,
+  currentRecipe,
   currentUser,
   getRandomUser,
+  setCurrentRecipe,
   setCurrentUser,
+  toggleConversion,
 } from "./scripts";
 import { search } from "./search";
 
@@ -64,6 +67,8 @@ main.addEventListener("click", (e) => {
       if (!e.target.closest(".recipe-card")) return;
       const clickedRecipe = e.target.closest(".recipe-card");
       const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
+      setCurrentRecipe(recipe);
+
       if (e.target.closest(".heart-container")) {
         const heartContainer = e.target.closest(".heart-container");
         heartContainer.innerHTML = "";
@@ -76,13 +81,20 @@ main.addEventListener("click", (e) => {
         }
       } else {
         main.innerHTML = "";
-        main.append(createRecipePageHTML(recipe));
+        main.append(createRecipePageHTML(currentRecipe));
         main.setAttribute("id", "recipe-page");
         filterSection.classList.add("hidden");
       }
       break;
     case "recipe-page":
-      if (e.target.classList.contains("conversion-slider")) console.log("HEY!");
+      if (e.target.classList.contains("conversion-slider")) {
+        toggleConversion();
+        const ingredientsContainer = document.querySelector(".ingredients");
+        ingredientsContainer.innerHTML = `${getIngredientQuantity(
+          currentRecipe,
+          ingredientsAPIData
+        )}`;
+      }
       break;
   }
 });
@@ -217,18 +229,11 @@ function createRecipePageHTML(recipe) {
     ""
   );
 
-  const ingredientList = findRecipeIngredients(recipe, ingredientsAPIData);
-  const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
-
-  let ingredientQuantityHTML = ingredientList
-    .map((ingredient, index) => {
-      return `<li><div class="ingredient-name">${ingredient}</div><div class="ingredient-amount">${quantityList[index]}</div></li>`;
-    })
-    .join("");
-
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? heartOn
     : heartOff;
+
+  const checkboxChecked = convertToUS ? "" : "checked";
 
   recipeContainer.innerHTML = `
     <div class="recipe-main">
@@ -252,12 +257,15 @@ function createRecipePageHTML(recipe) {
       <div class="ingredient-settings">
         <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
         <label class="switch">
-          <input type="checkbox" class="conversion-slider">
+          <input type="checkbox" ${checkboxChecked} class="conversion-slider">
           <span class="slider round"></span>
         </label>
       </div>
       <hr />
-      <ul class="ingredients">${ingredientQuantityHTML}</ul>
+      <ul class="ingredients">${getIngredientQuantity(
+        recipe,
+        ingredientsAPIData
+      )}</ul>
     </div>`;
 
   recipeContainer
@@ -267,6 +275,17 @@ function createRecipePageHTML(recipe) {
     });
 
   return recipeContainer;
+}
+
+function getIngredientQuantity(recipe, ingredient_dataset) {
+  const ingredientList = findRecipeIngredients(recipe, ingredient_dataset);
+  const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
+
+  return ingredientList
+    .map((ingredient, index) => {
+      return `<li><div class="ingredient-name">${ingredient}</div><div class="ingredient-amount">${quantityList[index]}</div></li>`;
+    })
+    .join("");
 }
 
 function toggleHeart(element, recipe, recipe_dataset) {
