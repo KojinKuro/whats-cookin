@@ -42,8 +42,6 @@ const searchBox = document.querySelector(".search-box");
 const tagsContainer = document.querySelector(".tags-container");
 // changing view query selectors
 const navButtonContainer = document.querySelector(".nav-buttons");
-// const cookbookButton = document.querySelector(".cookbook");
-// const savedRecipesButton = document.querySelector(".saved-recipes");
 const randomRecipeButton = document.querySelector(".random-recipe");
 
 const heartOn =
@@ -121,11 +119,11 @@ navButtonContainer.addEventListener("click", (e) => {
     recipesToDisplay = currentUser.recipesToCook;
   }
 
-  resetFilters();
   viewChanged = true;
+  resetFilters();
+  filterSection.classList.remove("hidden");
   mainDirectory.innerHTML = "";
   main.setAttribute("id", "directory-page");
-  filterSection.classList.remove("hidden");
   displayRecipeCards(recipesToDisplay);
   updateTags(recipesToDisplay);
 });
