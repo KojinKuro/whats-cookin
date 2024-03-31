@@ -7,6 +7,7 @@ import "./images/turing-logo.png";
 // Below are examples of how you can import functions from either the recipes or domUpdates files.
 
 export let currentUser;
+export let currentRecipe;
 export let convertToUS = false;
 
 export function getRandomUser(user_dataset) {
@@ -19,6 +20,11 @@ function randomNumber(max) {
 
 export function setCurrentUser(user) {
   currentUser = user;
+}
+
+export function setCurrentRecipe(recipe) {
+  currentRecipe = recipe;
+  return currentRecipe;
 }
 
 export function toggleConversion() {
