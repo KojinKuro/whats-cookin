@@ -20,3 +20,8 @@ function randomNumber(max) {
 export function setCurrentUser(user) {
   currentUser = user;
 }
+
+export function toggleConversion() {
+  convertToUS = !convertToUS;
+  return convertToUS;
+}
