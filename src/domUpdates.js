@@ -122,12 +122,11 @@ navButtonContainer.addEventListener("click", (e) => {
   }
 
   viewChanged = true;
-  resetFilters();
   filterSection.classList.remove("hidden");
   mainDirectory.innerHTML = "";
   main.setAttribute("id", "directory-page");
   displayRecipeCards(recipesToDisplay);
-  updateTags(recipesToDisplay);
+  resetFilters(recipesToDisplay);
 });
 
 // FUNCTIONS
@@ -164,10 +163,11 @@ const infiniteLoad = (function () {
   };
 })();
 
-function resetFilters() {
+function resetFilters(recipe_dataset) {
   searchBox.value = "";
   const activeTags = tagsContainer.querySelectorAll(".tag-active");
   activeTags.forEach((tag) => tag.classList.remove("tag-active"));
+  updateTags(recipe_dataset);
 }
 
 function displayRecipeCards(recipe_dataset) {
