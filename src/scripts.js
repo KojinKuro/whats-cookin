@@ -8,7 +8,7 @@ import "./images/turing-logo.png";
 
 export let currentUser;
 export let currentRecipe;
-export let convertToUS = false;
+export let convertToUS = true;
 
 export function getRandomUser(user_dataset) {
   return user_dataset[randomNumber(user_dataset.length)];

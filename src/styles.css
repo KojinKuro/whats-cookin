@@ -1,5 +1,13 @@
+:root {
+  --sidebar-width: 300px;
+}
+
 .hidden {
   visibility: hidden !important;
+}
+
+.gatile {
+  font-family: "Gatile";
 }
 
 html,
@@ -10,14 +18,13 @@ body {
 }
 
 html {
-  /* background-image: url("./images/white-watercolor-papar-texture-background-cover-card-design-overlay-paint-art-background_1962-2474.avif"); */
   background-color: #fefaf7;
   font-family: sans-serif;
 }
 
 body {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: var(--sidebar-width) 1fr;
   grid-template-rows: 100px 1fr;
   gap: 10px;
 
@@ -28,12 +35,10 @@ header {
   grid-column: 1 / -1;
 
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 40px;
 
-  font-family: "Gatile";
+  padding: 40px;
 
   .header-nav {
     display: flex;
@@ -53,7 +58,7 @@ header {
   }
 
   .logo {
-    font-size: 60px;
+    font-size: 3rem;
   }
 }
 
@@ -170,7 +175,8 @@ main#directory-page {
   .recipe-image {
     object-fit: cover;
     overflow: hidden;
-    border-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
     mask-image: linear-gradient(
       to right,
       rgba(0, 0, 0, 1),
@@ -219,26 +225,22 @@ main#recipe-page {
     width: 30px;
   }
 
-  .gatile {
-    font-family: "Gatile";
-  }
-
   .recipe-main {
     position: relative;
     grid-column: 1/-1;
 
     .title-container {
       position: absolute;
-      top: 50px;
+      top: 25%;
+      left: 0;
 
       max-width: 750px;
       overflow: hidden;
 
       .title {
-        font-size: 5rem;
-
+        font-size: 3.5rem;
         padding: 10px;
-        background-color: #fff3e0;
+        background-color: #fefaf7;
         display: inline;
       }
     }
@@ -273,8 +275,10 @@ main#recipe-page {
   }
 
   .ingredients-container {
-    background-color: #fff2e1;
-    padding: 20px;
+    .ingredients-background {
+      background-color: #fff2e1;
+      padding: 20px;
+    }
 
     ul {
       padding: 0;
@@ -341,11 +345,11 @@ main#recipe-page {
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #d39738;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+  box-shadow: 0 0 1px #d39738;
 }
 
 input:checked + .slider:before {
