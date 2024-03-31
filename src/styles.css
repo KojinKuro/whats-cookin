@@ -78,8 +78,23 @@ nav.filter-container {
   }
   .search-box {
     border: none;
-    border-radius: 4px;
+    border-radius: 15px;
     height: 30px;
+    padding-left: 15px;
+    font-size: 1rem;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  .tags-container {
+    .tag {
+      background-color: #9d968b;
+      font-size: 0.95rem;
+      margin-right: 5px;
+      margin-bottom: 3px;
+    }
   }
 }
 
@@ -167,7 +182,8 @@ main#directory-page {
 }
 
 .tag-active {
-  background-color: #d39738;
+  color: white !important;
+  background-color: #d39738 !important;
 }
 
 .tag-inactive {
