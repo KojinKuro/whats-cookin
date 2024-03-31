@@ -5,8 +5,6 @@ import {
   recipesAPIData,
   usersAPIData,
 } from "./apiCalls";
-// import ingredientsData from "./data/ingredients";
-// import recipeData from "./data/recipes";
 import { calculateRecipeCost } from "./cost";
 import {
   addRecipeToArray,
@@ -59,26 +57,23 @@ tagsContainer.addEventListener("click", function (e) {
 });
 
 mainDirectory.addEventListener("scroll", () => {
-  if (isSentinelInView()) displayRecipes(recipesToDisplay);
+  if (isSentinelInView()) displayRecipeCards(recipesToDisplay);
 });
 main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
       if (!e.target.closest(".recipe-card")) return;
+
       const clickedRecipe = e.target.closest(".recipe-card");
       const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
       setCurrentRecipe(recipe);
 
       if (e.target.closest(".heart-container")) {
-        const heartContainer = e.target.closest(".heart-container");
-        heartContainer.innerHTML = "";
-        if (!isRecipeFavorited(recipe, currentUser.recipesToCook)) {
-          heartContainer.innerHTML = heartOn;
-          addRecipeToArray(currentUser.recipesToCook, recipe);
-        } else {
-          heartContainer.innerHTML = heartOff;
-          removeRecipeFromArray(currentUser.recipesToCook, recipe);
-        }
+        toggleHeart(
+          e.target.closest(".heart-container"),
+          currentRecipe,
+          currentUser.recipesToCook
+        );
       } else {
         main.innerHTML = "";
         main.append(createRecipePageHTML(currentRecipe));
@@ -94,11 +89,19 @@ main.addEventListener("click", (e) => {
           currentRecipe,
           ingredientsAPIData
         )}`;
+      } else if (e.target.closest(".heart-container")) {
+        toggleHeart(
+          e.target.closest(".heart-container"),
+          currentRecipe,
+          currentUser.recipesToCook
+        );
       }
       break;
   }
 });
-randomRecipeButton.addEventListener("click", displayRandomRecipe);
+randomRecipeButton.addEventListener("click", () => {
+  displayRandomRecipe();
+});
 
 cookbookButton.addEventListener("click", function () {
   isSavedRecipesView = false;
@@ -110,8 +113,8 @@ cookbookButton.addEventListener("click", function () {
 
   recipesToDisplay = recipesAPIData;
 
-  displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesToDisplay);
+  displayRecipeCards(recipesToDisplay);
+  updateTags(recipesToDisplay);
 
   main.setAttribute("id", "directory-page");
   filterSection.classList.remove("hidden");
@@ -133,7 +136,7 @@ savedRecipesButton.addEventListener("click", function () {
   recipesToDisplay = currentUser.recipesToCook;
 
   displaySavedRecipes(recipesToDisplay);
-  updateTagsToDOM(currentUser.recipesToCook);
+  updateTags(currentUser.recipesToCook);
 
   mainDirectory.scrollTop = 0;
 });
@@ -143,8 +146,8 @@ export function init() {
   setCurrentUser(getRandomUser(usersAPIData));
 
   recipesToDisplay = recipesAPIData;
-  displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesToDisplay);
+  displayRecipeCards(recipesToDisplay);
+  updateTags(recipesToDisplay);
   logo.innerText += ` ${currentUser.name}`;
 }
 
@@ -173,7 +176,7 @@ const infiniteLoad = (function () {
   };
 })();
 
-function displayRecipes(recipe_dataset) {
+function displayRecipeCards(recipe_dataset) {
   mainDirectory.innerHTML = "";
   infiniteLoad(recipe_dataset);
 }
@@ -268,12 +271,6 @@ function createRecipePageHTML(recipe) {
       )}</ul>
     </div>`;
 
-  recipeContainer
-    .querySelector(".heart-container")
-    .addEventListener("click", (e) => {
-      toggleHeart(e.currentTarget, recipe, currentUser.recipesToCook);
-    });
-
   return recipeContainer;
 }
 
@@ -303,7 +300,7 @@ function getActiveTags() {
   return Array.from(activeTags).map((button) => button.dataset.tag);
 }
 
-function updateTagsToDOM(recipes) {
+function updateTags(recipes) {
   const activeTags = getActiveTags();
   const tagRecipeCount = getTagRecipeCount(activeTags, recipes);
   const tagNames = Object.keys(tagRecipeCount);
@@ -314,9 +311,8 @@ function updateTagsToDOM(recipes) {
     button.className = "tag";
     button.dataset.tag = tagName;
     button.textContent = `${tagName} (${tagRecipeCount[tagName]})`;
-    if (activeTags.includes(tagName)) {
-      button.classList.add("tag-active");
-    }
+
+    if (activeTags.includes(tagName)) button.classList.add("tag-active");
     tagsContainer.appendChild(button);
   });
 }
@@ -329,23 +325,19 @@ function isSentinelInView() {
 }
 
 function filterRecipes() {
-  let filteredRecipes;
-  if (isSavedRecipesView) {
-    filteredRecipes = filterRecipeByTag(
-      getActiveTags(),
-      currentUser.recipesToCook
-    );
-  } else {
-    filteredRecipes = filterRecipeByTag(getActiveTags(), recipesAPIData);
-  }
+  const recipe_dataset = isSavedRecipesView
+    ? currentUser.recipesToCook
+    : recipesAPIData;
+  let filteredRecipes = filterRecipeByTag(getActiveTags(), recipe_dataset);
+
   recipesToDisplay = search(
     searchBox.value.trim(),
     filteredRecipes,
     ingredientsAPIData
   );
   viewChanged = true;
-  displayRecipes(recipesToDisplay);
-  updateTagsToDOM(recipesToDisplay);
+  displayRecipeCards(recipesToDisplay);
+  updateTags(recipesToDisplay);
 }
 
 function displaySavedRecipes(recipes) {
@@ -360,21 +352,14 @@ function displaySavedRecipes(recipes) {
   }
 }
 
-function displayRandomRecipe() {
-  const randomIndex = Math.floor(Math.random() * recipeData.length);
-  const randomRecipe = recipeData[randomIndex];
+function displayRandomRecipe(recipe_dataset) {
+  const randomIndex = Math.floor(Math.random() * recipe_dataset.length);
+  const randomRecipe = recipe_dataset[randomIndex];
 
   main.innerHTML = "";
   main.append(createRecipePageHTML(randomRecipe));
   main.setAttribute("id", "recipe-page");
   filterSection.classList.add("hidden");
-
-  const heartContainer = document.querySelector(".heart-container");
-
-  heartContainer.addEventListener("click", () => {
-    const heartIcon = heartContainer.querySelector(".heart");
-    toggleHeart(heartIcon, randomRecipe, favoriteRecipes);
-  });
 }
 
-export { displayRecipes };
+export { displayRecipeCards as displayRecipes };
