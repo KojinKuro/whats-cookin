@@ -6,14 +6,19 @@ This project was created by [Charles Kwang](https://github.com/KojinKuro), [Ben 
 
 ## Overview
 
-Welcome to What's Cookin'! With this website, you can search through our recipe database using featured tags, a search box, and manually using our infinite scroll feature. Tired of losing recipes? Use our "like" button to save your favorite recipes. 
+Welcome to What's Cookin'! With this website, you can search through our recipe database using featured tags, a search box, and manually using our infinite scroll feature. Tired of losing recipes? Use our "like" button to save your favorite recipes.  This project was created to practice API calls, following TDD, and working on creating a complex web application in a team environment. We used Javascript, HTML, CSS for the core technologies with Mocha & Chai for our test suite.
 
 ## Installation & Setup
 
-1. ```git clone git@github.com:KojinKuro/whats-cookin.git```
-2. ```cd``` into directory
-3. run ```npm start```
-4. opt-click on localhost to open
+```
+git clone git@github.com:KojinKuro/whats-cookin.git
+cd whats-cookin
+npm install
+npm run start
+```
+Server URL: `localhost:8080`
+
+Test Suite: `npm run test`
 
 ## Media
 
@@ -28,7 +33,7 @@ Welcome to What's Cookin'! With this website, you can search through our recipe 
 
 ## Context
 
-This website was created in our 7th and 8th week of Turing School of Software and Design. This was a group project of three team memebers. This project took around 75 hours total, averaging 25 hours split amongst each memeber.
+This website was created in our 7th and 8th week of Turing School of Software and Design. This was a group project of three team memebers. This project took around 75 hours total, averaging 25 hours split amongst each memeber. This was built according to the following [spec sheet](https://frontend.turing.edu/projects/module-2/whats-cookin-part-one.html). There was no design comp provided for this project so our team designed [our own](https://www.figma.com/file/sASmZkfzWbXObPqYVOh9vQ/Figma-basics?type=design&node-id=1669%3A162202&mode=design&t=KfxDWyuUGfOfMnEr-1).
 
 ## Wins  
 
