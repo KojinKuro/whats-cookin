@@ -246,6 +246,12 @@ main#recipe-page {
     }
   }
 
+  .ingredient-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .ingredients-container {
     background-color: #fff2e1;
     padding: 20px;
@@ -282,7 +288,7 @@ main#recipe-page {
   height: 34px;
 }
 
-/* Hide default HTML checkbox */
+/* Hide default HTML checkbox  */
 .switch input {
   opacity: 0;
   width: 0;
