@@ -4,7 +4,11 @@
 
 This project was created by [Charles Kwang](https://github.com/KojinKuro), [Ben Wehrend](https://github.com/BenWehrend), and [Laurel Bonal](https://github.com/laurelbonal)
 
-## Set Up
+## Overview
+
+Welcome to What's Cookin'! With this website, you can search through our recipe database using featured tags, a search box, and manually using our infinite scroll feature. Tired of losing recipes? Use our "like" button to save your favorite recipes. 
+
+## Installation & Setup
 
 1. ```git clone git@github.com:KojinKuro/whats-cookin.git```
 2. ```cd``` into directory
@@ -13,17 +17,18 @@ This project was created by [Charles Kwang](https://github.com/KojinKuro), [Ben 
 
 ## Media
 
-## Overview
-
-Welcome to What's Cookin'! With this website, you can search through our recipe database using featured tags, a search box, and manually using our infinite scroll feature. Tired of losing recipes? Use our "like" button to save your favorite recipes. 
 
 ## Features
 
-This website has multiple features, including searching recipes through tags, searching from a user input search bar, saving recipes, and receiving a random recipe. The home page includes infinite scrolling. 
+- This website calls a backend server using API calls that stores our recipes
+- Allows filtering recipes using a search bar and recipe tags.
+- Click a button to get a random recipe
+- Save recipes into a list that you can view
+- This website has lazy loading implemented to save resources
 
 ## Context
 
-This website was created in our 7th and 8th week of Turing School of Software and Design. It took approx 20 hours of hands-on time, divided by the three of us.  
+This website was created in our 7th and 8th week of Turing School of Software and Design. This was a group project of three team memebers. This project took around 75 hours total, averaging 25 hours split amongst each memeber.
 
 ## Wins  
 
