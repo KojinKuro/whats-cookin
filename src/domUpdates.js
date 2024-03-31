@@ -177,13 +177,15 @@ function resetFilters(recipe_dataset) {
 
 function displayRecipeCards(recipe_dataset) {
   if (!recipe_dataset || !recipe_dataset.length) {
+    mainDirectory.style.justifyContent = "center";
     mainDirectory.innerHTML =
-      '<div style="text-align: center; font-family: Gatile, sans-serif; font-size: 5vh; color: #333;">No recipes found.</div>';
+      '<div class="gatile" style="text-align: center; font-size: 5vh">No recipes found.</div>';
     return;
+  } else {
+    mainDirectory.style.justifyContent = "center";
+    mainDirectory.innerHTML = "";
+    infiniteLoad(recipe_dataset);
   }
-
-  mainDirectory.innerHTML = "";
-  infiniteLoad(recipe_dataset);
 }
 
 function createSentinelHTML() {
