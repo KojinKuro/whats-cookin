@@ -11,6 +11,10 @@ Welcome to What's Cookin'! With this website, you can search through our recipe 
 ## 🖼️ Preview
 ![Kapture 2024-03-31 at 15 27 42](https://github.com/KojinKuro/whats-cookin/assets/11234292/b0ab4c26-22ed-4dc6-9082-ff1029c1c494)
 
+## 🔗 Live Demo
+
+[Live Deployment](https://kojinkuro.github.io/whats-cookin/)
+
 ## ⚙️ Installation & Setup
 
 ```
