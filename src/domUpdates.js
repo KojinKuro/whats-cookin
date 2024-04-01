@@ -206,13 +206,15 @@ function createRecipeHTML(recipe) {
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
     : removeRecipeFromArray(currentUser.recipesToCook, recipe);
 
+  const recipeTags = (recipe.tags.length) ? `<h3 class="recipe-tags">${recipe.tags.join(", ")}</h3>` : ""
+
   article.innerHTML = `
     <div class="recipe-image">
       <img src="${recipe.image}" alt="${recipe.name}">
     </div>
     <div class="recipe-info">
       <div class="tags-and-heart">
-        <h3 class="recipe-tags">${recipe.tags.join(", ")}</h3>
+        ${recipeTags}
         <div class="heart-container">${heartIcon}</div>
       </div>
       <h2 class="recipe-name">${recipe.name}</h2>
