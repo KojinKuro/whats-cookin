@@ -58,6 +58,10 @@ header {
   .logo {
     font-size: 3rem;
   }
+
+  .selected {
+    text-decoration: underline;
+  }
 }
 
 nav.filter-container {
