@@ -104,7 +104,9 @@ nav.filter-container {
     }
   }
 
-  .random-recipe {
+  .random-recipe,
+  .clear-search,
+  .clear-tags {
     background-color: #d39738;
     color: white;
     font-size: 1.25rem;
@@ -112,7 +114,9 @@ nav.filter-container {
   }
 
   .tag,
-  .random-recipe {
+  .random-recipe,
+  .clear-search,
+  .clear-tags {
     font-family: sans-serif;
     border: none;
     border-radius: 4px;
