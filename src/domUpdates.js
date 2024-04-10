@@ -81,6 +81,7 @@ main.addEventListener("click", (e) => {
         main.append(createRecipePageHTML(currentRecipe));
         main.setAttribute("id", "recipe-page");
         filterSection.classList.add("hidden");
+        // jank bug fix for recipe page
         body.style.cssText = "--sidebar-width: 0px";
       }
       break;
@@ -110,15 +111,21 @@ randomRecipeButton.addEventListener("click", () => {
   main.append(createRecipePageHTML(randomRecipe));
   main.setAttribute("id", "recipe-page");
   filterSection.classList.add("hidden");
+  // jank bug fix for recipe page
   body.style.cssText = "--sidebar-width: 0px";
 });
 
-navButtonContainer.addEventListener("click", (e) => {
+navButtonContainer.addEventListener("click", function (e) {
+  this.querySelectorAll("button").forEach((button) =>
+    button.classList.remove("selected")
+  );
+  e.target.classList.add("selected");
+
   if (e.target.classList.contains("cookbook")) {
-    isSavedRecipesView = false;
+    isSavedRecipesView = false; /* used for filtering */
     recipesToDisplay = recipesAPIData;
   } else if (e.target.classList.contains("saved-recipes")) {
-    isSavedRecipesView = true;
+    isSavedRecipesView = true; /* used for filtering */
     recipesToDisplay = currentUser.recipesToCook;
   } else {
     return;
@@ -126,6 +133,7 @@ navButtonContainer.addEventListener("click", (e) => {
 
   viewChanged = true;
   filterSection.classList.remove("hidden");
+  // jank bug fix for recipe page
   body.style.cssText = "--sidebar-width: 300px";
 
   mainDirectory.innerHTML = "";
@@ -206,7 +214,9 @@ function createRecipeHTML(recipe) {
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
     : removeRecipeFromArray(currentUser.recipesToCook, recipe);
 
-  const recipeTags = (recipe.tags.length) ? `<h3 class="recipe-tags">${recipe.tags.join(", ")}</h3>` : ""
+  const recipeTags = recipe.tags.length
+    ? `<h3 class="recipe-tags">${recipe.tags.join(", ")}</h3>`
+    : "";
 
   article.innerHTML = `
     <div class="recipe-image">
