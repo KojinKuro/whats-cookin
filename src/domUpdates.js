@@ -144,10 +144,12 @@ navButtonContainer.addEventListener("click", function (e) {
   displayRecipeCards(recipesToDisplay);
   resetFilters(recipesToDisplay);
 });
+
 clearSearchBox.addEventListener('click', function() {
   searchBox.value = '';
   filterRecipes();
 });
+
 clearTags.addEventListener('click', function() {
   const activeTags = tagsContainer.querySelectorAll('.tag-active');
   activeTags.forEach((tag) => {
