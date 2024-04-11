@@ -326,6 +326,10 @@ function toggleHeart(element, recipe, recipe_dataset) {
 }
 
 function setPageToRecipe(recipe) {
+  navButtonContainer
+    .querySelectorAll("button")
+    .forEach((button) => button.classList.remove("selected"));
+
   setCurrentRecipe(recipe);
 
   main.innerHTML = "";
