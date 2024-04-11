@@ -117,6 +117,7 @@ main.addEventListener("click", (e) => {
 randomRecipeButton.addEventListener("click", () => {
   const randomIndex = randomNumber(recipesAPIData.length);
   const randomRecipe = recipesAPIData[randomIndex];
+  setCurrentRecipe(randomRecipe);
 
   main.innerHTML = "";
   main.append(createRecipePageHTML(randomRecipe));
