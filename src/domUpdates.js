@@ -45,8 +45,8 @@ const tagsContainer = document.querySelector(".tags-container");
 const navButtonContainer = document.querySelector(".nav-buttons");
 const randomRecipeButton = document.querySelector(".random-recipe");
 // clear buttons query selectors
-const clearSearchBox = document.querySelector(".clear-search");
-const clearTags = document.querySelector(".clear-tags");
+const filterSettings = document.querySelector(".filter-settings");
+const clearSearchButton = document.querySelector(".clear-search");
 
 const heartOn =
   '<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: #b30202;transform: ;msFilter:;"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>';
@@ -54,12 +54,32 @@ const heartOff = `<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox=
 
 // EVENT LISTENERS
 addEventListener("load", fetchData);
-searchBox.addEventListener("input", filterRecipes);
-tagsContainer.addEventListener("click", function (e) {
-  if (!e.target.classList.contains("tag")) return;
-
-  e.target.classList.toggle("tag-active");
+searchBox.addEventListener('input', function() {
+  if (searchBox.value) {
+    clearSearchButton.style.visibility = 'visible';
+  } else {
+    clearSearchButton.style.visibility = 'hidden';
+  }
   filterRecipes();
+});
+
+filterSettings.addEventListener("click", function (e) {
+  if (e.target.classList.contains("clear-search")) {
+    searchBox.value = '';
+    clearSearchButton.classList.remove('show-clear');
+    filterRecipes();
+  } 
+  else if (e.target.classList.contains("clear-tags")) {
+    const activeTags = tagsContainer.querySelectorAll('.tag-active');
+    activeTags.forEach(tag => {
+      tag.classList.remove('tag-active');
+    });
+    filterRecipes();
+  } 
+  else if (e.target.classList.contains("tag")) {
+    e.target.classList.toggle('tag-active');
+    filterRecipes();
+  }
 });
 mainDirectory.addEventListener("scroll", () => {
   if (isSentinelInView()) displayRecipeCards(recipesToDisplay);
@@ -145,19 +165,19 @@ navButtonContainer.addEventListener("click", function (e) {
   resetFilters(recipesToDisplay);
 });
 
-clearSearchBox.addEventListener('click', function() {
-  searchBox.value = '';
-  filterRecipes();
-});
+// clearSearchBox.addEventListener('click', function() {
+//   searchBox.value = '';
+//   filterRecipes();
+// });
 
-clearTags.addEventListener('click', function() {
-  const activeTags = tagsContainer.querySelectorAll('.tag-active');
-  activeTags.forEach((tag) => {
-      tag.classList.remove('tag-active');
-  });
+// clearTags.addEventListener('click', function() {
+//   const activeTags = tagsContainer.querySelectorAll('.tag-active');
+//   activeTags.forEach((tag) => {
+//       tag.classList.remove('tag-active');
+//   });
 
-  filterRecipes();
-});
+//   filterRecipes();
+// });
 
 // FUNCTIONS
 export function init() {

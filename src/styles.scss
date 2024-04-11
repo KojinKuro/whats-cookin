@@ -89,6 +89,7 @@ nav.filter-container {
     height: 30px;
     padding-left: 15px;
     font-size: 1rem;
+    width: 95%;
   }
 
   h3 {
@@ -104,9 +105,19 @@ nav.filter-container {
     }
   }
 
-  .random-recipe,
-  .clear-search,
+  .tags-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }  
+
   .clear-tags {
+    background: none;
+    border: none;
+    font-size: 1.25vw;
+  }
+
+  .random-recipe {
     background-color: #d39738;
     color: white;
     font-size: 1.25rem;
@@ -114,12 +125,21 @@ nav.filter-container {
   }
 
   .tag,
-  .random-recipe,
-  .clear-search,
-  .clear-tags {
+  .random-recipe {
     font-family: sans-serif;
     border: none;
     border-radius: 4px;
+  }
+
+  .clear-search {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    font-size: 2vw;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
   }
 }
 
