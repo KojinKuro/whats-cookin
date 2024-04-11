@@ -14,7 +14,6 @@ export function findRecipeIngredientsQuantity(recipe, convertToUS) {
     const amount = ingredient.quantity.amount;
     const unit = sanitizeUnit(ingredient.quantity.unit);
     const converted = ingredientConvertor(amount, unit, convertToUS);
-    console.log(converted);
     const space = unit.length ? " " : "";
 
     return `${+converted.amount.toFixed(2)}${space}${converted.unit}`;
