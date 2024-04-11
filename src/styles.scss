@@ -1,4 +1,6 @@
-$sidebar-width: 300px;
+:root {
+  --sidebar-width: 300px;
+}
 
 .hidden {
   visibility: hidden !important;
@@ -22,7 +24,7 @@ html {
 
 body {
   display: grid;
-  grid-template-columns: $sidebar-width 1fr;
+  grid-template-columns: var(--sidebar-width) 1fr;
   grid-template-rows: 100px 1fr;
   gap: 10px;
 
