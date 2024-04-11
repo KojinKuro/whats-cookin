@@ -190,22 +190,22 @@ const infiniteLoad = (function () {
   };
 })();
 
-function resetFilters(recipe_dataset) {
+function resetFilters(recipeDataset) {
   searchBox.value = "";
   const activeTags = tagsContainer.querySelectorAll(".tag-active");
   activeTags.forEach((tag) => tag.classList.remove("tag-active"));
-  updateTags(recipe_dataset);
+  updateTags(recipeDataset);
 }
 
-function displayRecipeCards(recipe_dataset) {
-  if (!recipe_dataset || !recipe_dataset.length) {
+function displayRecipeCards(recipeDataset) {
+  if (!recipeDataset || !recipeDataset.length) {
     mainDirectory.style.justifyContent = "center";
     mainDirectory.innerHTML =
       '<div class="gatile" style="text-align: center; font-size: 5vh">No recipes found.</div>';
   } else {
     mainDirectory.style.justifyContent = null;
     mainDirectory.innerHTML = "";
-    infiniteLoad(recipe_dataset);
+    infiniteLoad(recipeDataset);
   }
 }
 
@@ -317,8 +317,8 @@ function createRecipePageHTML(recipe) {
   return recipeContainer;
 }
 
-function getIngredientQuantity(recipe, ingredient_dataset) {
-  const ingredientList = findRecipeIngredients(recipe, ingredient_dataset);
+function getIngredientQuantity(recipe, ingredientDataset) {
+  const ingredientList = findRecipeIngredients(recipe, ingredientDataset);
   const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
 
   return ingredientList
@@ -328,14 +328,14 @@ function getIngredientQuantity(recipe, ingredient_dataset) {
     .join("");
 }
 
-function toggleHeart(element, recipe, recipe_dataset) {
-  const isFavorited = isRecipeFavorited(recipe, recipe_dataset);
+function toggleHeart(element, recipe, recipeDataset) {
+  const isFavorited = isRecipeFavorited(recipe, recipeDataset);
   if (!isFavorited) {
     element.innerHTML = heartOn;
-    addRecipeToArray(recipe_dataset, recipe);
+    addRecipeToArray(recipeDataset, recipe);
   } else {
     element.innerHTML = heartOff;
-    removeRecipeFromArray(recipe_dataset, recipe);
+    removeRecipeFromArray(recipeDataset, recipe);
   }
 }
 

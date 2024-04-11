@@ -1,14 +1,14 @@
 import { findRecipeIngredients } from "./recipes";
 
-export function search(searchQuery, recipe_dataset, ingredient_dataset) {
+export function search(searchQuery, recipeDataset, ingredientDataset) {
   const searchResult = [];
   const sanitizedQuery = sanitizeString(searchQuery);
 
   return searchResult.concat(
-    recipe_dataset.filter((recipe) => {
+    recipeDataset.filter((recipe) => {
       return (
         matchName(recipe, sanitizedQuery) ||
-        matchIngredient(recipe, sanitizedQuery, ingredient_dataset)
+        matchIngredient(recipe, sanitizedQuery, ingredientDataset)
       );
     })
   );
@@ -19,9 +19,9 @@ function matchName(recipe, searchQuery) {
   return sanitizeString(recipe.name).includes(sanitizedQuery);
 }
 
-function matchIngredient(recipe, searchQuery, ingredient_dataset) {
+function matchIngredient(recipe, searchQuery, ingredientDataset) {
   const sanitizedQuery = sanitizeString(searchQuery);
-  const ingredients = findRecipeIngredients(recipe, ingredient_dataset);
+  const ingredients = findRecipeIngredients(recipe, ingredientDataset);
 
   for (const ingredient of ingredients)
     if (sanitizeString(ingredient).includes(sanitizedQuery)) return true;
