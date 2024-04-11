@@ -406,12 +406,12 @@ input:checked + .slider:before {
 
 // Error message 
 .warning {
-  padding: 20px;
+  padding: 1.25rem;
   background-color: #f44336;
   color: white;
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 1.25rem;
+  left: 1.25rem;
   z-index: 1000;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
