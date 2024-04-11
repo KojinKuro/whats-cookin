@@ -248,6 +248,16 @@ function createRecipeHTML(recipe) {
   return article;
 }
 
+function createTagHTML(tagName, number) {
+  const tagNumber = number ? number : 0;
+
+  const button = document.createElement("button");
+  button.classList.add("tag");
+  button.dataset.tag = tagName;
+  button.textContent = `${tagName} (${tagNumber})`;
+  return button;
+}
+
 function createRecipePageHTML(recipe) {
   const recipeContainer = document.createElement("div");
   recipeContainer.classList.add("recipe-container");
@@ -342,14 +352,15 @@ function updateTags(recipes) {
   const tagNames = Object.keys(tagRecipeCount);
 
   tagsContainer.innerHTML = "";
+  activeTags.sort().forEach((tagName) => {
+    const tag = createTagHTML(tagName, tagRecipeCount[tagName]);
+    tag.classList.add("tag-active");
+    tagsContainer.appendChild(tag);
+  });
   tagNames.forEach((tagName) => {
-    const button = document.createElement("button");
-    button.className = "tag";
-    button.dataset.tag = tagName;
-    button.textContent = `${tagName} (${tagRecipeCount[tagName]})`;
-
-    if (activeTags.includes(tagName)) button.classList.add("tag-active");
-    tagsContainer.appendChild(button);
+    if (activeTags.find((activeTag) => activeTag === tagName)) return;
+    const tag = createTagHTML(tagName, tagRecipeCount[tagName]);
+    tagsContainer.appendChild(tag);
   });
 }
 
@@ -370,15 +381,20 @@ function updateClearFilterButtons() {
     : clearTagsButton.classList.add("hidden");
 }
 
-function filterRecipes() {
-  const recipe_dataset = isSavedRecipesView ? currentUser.recipesToCook : recipesAPIData;
+const filterRecipes = () => {
+  const recipes = isSavedRecipesView
+    ? currentUser.recipesToCook
+    : recipesAPIData;
 
-  let filteredByTags = filterRecipeByTag(getActiveTags(), recipe_dataset);
-
-  recipesToDisplay = search(searchBox.value.trim(), filteredByTags, ingredientsAPIData);
+  recipesToDisplay = search(
+    searchBox.value.trim(),
+    filterRecipeByTag(getActiveTags(), recipes),
+    ingredientsAPIData
+  );
 
   displayRecipeCards(recipesToDisplay);
+  updateTags(recipesToDisplay);
   updateClearFilterButtons();
-}
+};
 
 export { displayRecipeCards as displayRecipes };
