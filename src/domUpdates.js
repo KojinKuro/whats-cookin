@@ -371,20 +371,13 @@ function updateClearFilterButtons() {
 }
 
 function filterRecipes() {
-  viewChanged = true;
-  const recipe_dataset = isSavedRecipesView
-    ? currentUser.recipesToCook
-    : recipesAPIData;
-  let filteredRecipes = filterRecipeByTag(getActiveTags(), recipe_dataset);
+  const recipe_dataset = isSavedRecipesView ? currentUser.recipesToCook : recipesAPIData;
 
-  recipesToDisplay = search(
-    searchBox.value.trim(),
-    filteredRecipes,
-    ingredientsAPIData
-  );
+  let filteredByTags = filterRecipeByTag(getActiveTags(), recipe_dataset);
+
+  recipesToDisplay = search(searchBox.value.trim(), filteredByTags, ingredientsAPIData);
 
   displayRecipeCards(recipesToDisplay);
-  updateTags(recipesToDisplay);
   updateClearFilterButtons();
 }
 
