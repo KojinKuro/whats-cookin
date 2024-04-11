@@ -75,7 +75,6 @@ describe("Recipe", () => {
         true
       );
 
-      console.log(ingredients);
       expect(ingredients).to.deep.equal([
         "5.64 oz",
         "1.41 oz",
