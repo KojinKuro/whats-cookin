@@ -78,24 +78,17 @@ main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
       if (!e.target.closest(".recipe-card")) return;
-
       const clickedRecipe = e.target.closest(".recipe-card");
       const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
-      setCurrentRecipe(recipe);
 
       if (e.target.closest(".heart-container")) {
         toggleHeart(
           e.target.closest(".heart-container"),
-          currentRecipe,
+          recipe,
           currentUser.recipesToCook
         );
       } else {
-        main.innerHTML = "";
-        main.append(createRecipePageHTML(currentRecipe));
-        main.setAttribute("id", "recipe-page");
-        filterSection.classList.add("hidden");
-        // jank bug fix for recipe page
-        body.style.cssText = "--sidebar-width: 0px";
+        setPageToRecipe(recipe);
       }
       break;
     case "recipe-page":
@@ -119,14 +112,7 @@ main.addEventListener("click", (e) => {
 randomRecipeButton.addEventListener("click", () => {
   const randomIndex = randomNumber(recipesAPIData.length);
   const randomRecipe = recipesAPIData[randomIndex];
-  setCurrentRecipe(randomRecipe);
-
-  main.innerHTML = "";
-  main.append(createRecipePageHTML(randomRecipe));
-  main.setAttribute("id", "recipe-page");
-  filterSection.classList.add("hidden");
-  // jank bug fix for recipe page
-  body.style.cssText = "--sidebar-width: 0px";
+  setPageToRecipe(randomRecipe);
 });
 
 navButtonContainer.addEventListener("click", function (e) {
@@ -337,6 +323,17 @@ function toggleHeart(element, recipe, recipe_dataset) {
     element.innerHTML = heartOff;
     removeRecipeFromArray(recipe_dataset, recipe);
   }
+}
+
+function setPageToRecipe(recipe) {
+  setCurrentRecipe(recipe);
+
+  main.innerHTML = "";
+  main.append(createRecipePageHTML(recipe));
+  main.setAttribute("id", "recipe-page");
+  filterSection.classList.add("hidden");
+  // jank bug fix for recipe page
+  body.style.cssText = "--sidebar-width: 0px";
 }
 
 function getActiveTags() {
