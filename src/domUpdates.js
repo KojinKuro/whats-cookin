@@ -401,4 +401,19 @@ const filterRecipes = () => {
   updateClearFilterButtons();
 };
 
-export { displayRecipeCards as displayRecipes };
+const displayWarning = (message) => {
+  const warningMessageElement = document.querySelector('.warning');
+  if (!warningMessageElement) return;
+
+  warningMessageElement.textContent = message;
+  warningMessageElement.style.display = 'block';
+
+  setTimeout(() => {
+    warningMessageElement.style.display = 'none';
+  }, 3000);
+};
+
+export { 
+  displayRecipeCards as displayRecipes,
+  displayWarning
+};
