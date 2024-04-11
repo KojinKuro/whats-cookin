@@ -2,9 +2,9 @@
 import convert from "convert-units";
 import { sanitizeString } from "./search";
 
-export const findRecipeIngredients = (recipe, ingredient_dataset) => {
+export const findRecipeIngredients = (recipe, ingredientDataset) => {
   return recipe.ingredients.reduce((list, recipeIngredient) => {
-    list.push(findIngredient(recipeIngredient.id, ingredient_dataset).name);
+    list.push(findIngredient(recipeIngredient.id, ingredientDataset).name);
     return list;
   }, []);
 };
@@ -113,8 +113,8 @@ export const findRecipeInstructions = (recipe) => {
     .map((step) => step.instruction);
 };
 
-export function findIngredient(ingredientID, ingredient_dataset) {
-  return ingredient_dataset.find(
+export function findIngredient(ingredientID, ingredientDataset) {
+  return ingredientDataset.find(
     (ingredientData) => ingredientData.id == ingredientID
   );
 }
@@ -137,18 +137,18 @@ export function removeRecipeFromArray(recipesArray, recipeToRemove) {
   }
 }
 
-export function findRecipeFromID(recipeID, recipe_dataset) {
-  return recipe_dataset.find((recipe) => recipe.id === +recipeID);
+export function findRecipeFromID(recipeID, recipeDataset) {
+  return recipeDataset.find((recipe) => recipe.id === +recipeID);
 }
 
-export function isFavorited(favoriteRecipes, recipe_dataset) {
+export function isFavorited(favoriteRecipes, recipeDataset) {
   return favoriteRecipes.filter((recipe) =>
-    recipe_dataset.some((dataRecipe) => dataRecipe.id === recipe.id)
+    recipeDataset.some((dataRecipe) => dataRecipe.id === recipe.id)
   );
 }
 
-export function isRecipeFavorited(recipe, recipe_dataset) {
-  return recipe_dataset.find((currentRecipe) => {
+export function isRecipeFavorited(recipe, recipeDataset) {
+  return recipeDataset.find((currentRecipe) => {
     return currentRecipe.id === recipe.id;
   });
 }

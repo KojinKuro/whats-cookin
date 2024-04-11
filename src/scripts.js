@@ -10,8 +10,8 @@ export let currentUser;
 export let currentRecipe;
 export let convertToUS = true;
 
-export function getRandomUser(user_dataset) {
-  return user_dataset[randomNumber(user_dataset.length)];
+export function getRandomUser(userDataset) {
+  return userDataset[randomNumber(userDataset.length)];
 }
 
 export function randomNumber(max) {
