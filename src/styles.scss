@@ -109,12 +109,17 @@ nav.filter-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }  
+  }
 
   .clear-tags {
     background: none;
     border: none;
     font-size: medium;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .random-recipe {
@@ -135,7 +140,7 @@ nav.filter-container {
     position: absolute;
     top: 5%;
     right: 5%;
-    font-size: 1.25vw;
+    font-size: 1rem;
     transform: translateY(-50%);
     border: none;
     background: transparent;
