@@ -17,13 +17,17 @@
 
     <nav class="filter-container">
       <div class="filter-settings">
-        <input
-          type="text"
-          class="search-box"
-          aria-label="search"
-          placeholder="Search ..."
-        />
-        <h3>Tags</h3>
+          <input
+            type="text"
+            class="search-box"
+            aria-label="search"
+            placeholder="Search ..."
+          />
+        <button class="clear-search hidden"">X</button>
+        <div class="tags-header">
+          <h3>Tags</h3>
+          <button class="clear-tags hidden">Clear Tags</button>
+        </div>
         <div class="tags-container"></div>
       </div>
       <button class="random-recipe">RANDOM RECIPE</button>
