@@ -63,30 +63,30 @@ searchBox.addEventListener('input', function() {
   }
   filterRecipes();
 });
-clearSearchButton.addEventListener('click', function() {
-  searchBox.value = '';
-  clearSearchButton.style.visibility = 'hidden';
-  filterRecipes();
-});
 filterSettings.addEventListener("click", function (e) {
   if (e.target.classList.contains("clear-search")) {
     searchBox.value = '';
-    clearSearchButton.classList.remove('show-clear');
-    filterRecipes();
-  } 
+    clearSearchButton.style.visibility = 'hidden';
+  }
   else if (e.target.classList.contains("clear-tags")) {
     const activeTags = tagsContainer.querySelectorAll('.tag-active');
     activeTags.forEach(tag => {
       tag.classList.remove('tag-active');
     });
-    filterRecipes();
     toggleClearTagsButton();
   } 
   else if (e.target.classList.contains("tag")) {
     e.target.classList.toggle('tag-active');
-    filterRecipes();
     toggleClearTagsButton();
   }
+
+  if (searchBox.value) {
+    clearSearchButton.style.visibility = 'visible';
+  } else {
+    clearSearchButton.style.visibility = 'hidden';
+  }
+
+  filterRecipes();
 });
 mainDirectory.addEventListener("scroll", () => {
   if (isSentinelInView()) displayRecipeCards(recipesToDisplay);
