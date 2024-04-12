@@ -398,7 +398,7 @@ const filterRecipes = () => {
   updateClearFilterButtons();
 };
 
-const displayWarning = (message, iconName = "bug-alt", timeout = 3000) => {
+const displayWarning = (message, iconName = "bug-alt") => {
   const warningMessageContainer = document.querySelector(".warning-container");
   if (!warningMessageContainer) return;
 
@@ -411,7 +411,7 @@ const displayWarning = (message, iconName = "bug-alt", timeout = 3000) => {
 
   setTimeout(() => {
     warningMessageContainer.querySelector(".warning").remove();
-  }, timeout);
+  }, 3000);
 };
 
 export { displayRecipeCards as displayRecipes, displayWarning };
