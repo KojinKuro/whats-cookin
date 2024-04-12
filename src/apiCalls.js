@@ -4,7 +4,7 @@
 // global.recipesAPIData = recipesAPIData;
 // global.ingredientsAPIData = ingredientsAPIData;
 
-import { displayWarning } from '../src/domUpdates.js';
+import { displayWarning } from "../src/domUpdates.js";
 
 export let usersAPIData;
 export let recipesAPIData;
@@ -16,7 +16,7 @@ function fetchData(name) {
     .then((data) => data[name])
     .catch((error) => {
       console.error(error);
-      displayWarning('Unable to fetch data. Please try again later.');
+      displayWarning("Unable to fetch data. Please try again later.");
     });
 }
 

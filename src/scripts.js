@@ -3,6 +3,7 @@
 import "./domUpdates";
 import "./styles.scss";
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
+import "boxicons";
 import "./images/turing-logo.png";
 // Below are examples of how you can import functions from either the recipes or domUpdates files.
 

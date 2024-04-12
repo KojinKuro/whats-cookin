@@ -204,11 +204,6 @@ main#directory-page {
     justify-content: space-between;
   }
 
-  .heart {
-    height: 35px;
-    width: 35px;
-  }
-
   .recipe-image {
     object-fit: cover;
     overflow: hidden;
@@ -255,11 +250,6 @@ main#recipe-page {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-  }
-
-  .heart-container {
-    height: 30px;
-    width: 30px;
   }
 
   .recipe-main {
@@ -404,7 +394,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-// Error message 
+// Error message
 .warning {
   padding: 1.25rem;
   background-color: #f44336;
