@@ -11,7 +11,7 @@ export let recipesAPIData;
 export let ingredientsAPIData;
 
 function fetchData(name) {
-  return fetch(`https://what-s-cookin-starter-kit.herokuapp.com/api/v1/${name}`)
+  return fetch(`http://localhost:3001/api/v1/${name}`)
     .then((r) => r.json())
     .then((data) => data[name])
     .catch((error) => {
@@ -30,5 +30,32 @@ export function fetchServerData() {
     usersAPIData = users;
     ingredientsAPIData = ingredients;
     recipesAPIData = recipes;
+  });
+}
+
+
+export function sendServerData(userID, recipeID){
+  const IDs = { 
+    userID: userID, 
+    recipeID: recipeID
+  }
+  fetch(`http://localhost:3001/api/v1/usersRecipes`, {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(IDs)
+  })
+  .then(response => {
+    if(!response.ok){
+      throw new Error(`Error ${response.status}`)
+    } 
+    return response.json()
+  })
+  .then(data => {
+    console.log(data.message)
+    return data
+  })
+  .catch((error) => {
+    console.error(error);
+    displayWarning(`Unable to save favorite recipe :(`);
   });
 }
