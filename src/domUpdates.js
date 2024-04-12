@@ -85,7 +85,7 @@ main.addEventListener("click", (e) => {
           currentUser.recipesToCook
         );
         e.preventDefault()
-        sendServerData(currentUser, currentRecipe)
+        sendServerData(currentUser.id, recipe.id)
       } else {
         setPageToRecipe(recipe);
       }

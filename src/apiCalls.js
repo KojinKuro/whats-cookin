@@ -39,6 +39,8 @@ export function sendServerData(userID, recipeID){
     userID: userID, 
     recipeID: recipeID
   }
+  console.log(userID)
+  console.log(recipeID)
   fetch(`http://localhost:3001/api/v1/usersRecipes`, {
     method: "POST",
     headers: {'Content-Type': 'application/json'},
@@ -55,7 +57,7 @@ export function sendServerData(userID, recipeID){
     return data
   })
   .catch((error) => {
-    console.error(error);
+    console.log(error);
     displayWarning(`Unable to save favorite recipe :(`);
   });
 }
