@@ -16,7 +16,7 @@ function fetchData(name) {
     .then((data) => data[name])
     .catch((error) => {
       console.error(error);
-      displayWarning("Unable to fetch data. Please try again later.");
+      displayWarning(`Unable to fetch ${name} data. Please try again later.`);
     });
 }
 

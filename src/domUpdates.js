@@ -398,16 +398,20 @@ const filterRecipes = () => {
   updateClearFilterButtons();
 };
 
-const displayWarning = (message) => {
-  const warningMessageElement = document.querySelector(".warning");
-  if (!warningMessageElement) return;
+const displayWarning = (message, iconName = "bug-alt", timeout = 3000) => {
+  const warningMessageContainer = document.querySelector(".warning-container");
+  if (!warningMessageContainer) return;
 
-  warningMessageElement.textContent = message;
-  warningMessageElement.style.display = "block";
+  const warning = document.createElement("div");
+  warning.classList.add("warning");
+  warning.innerHTML = `
+  <box-icon color='white' name='${iconName}'></box-icon>
+  ${message}`;
+  warningMessageContainer.appendChild(warning);
 
   setTimeout(() => {
-    warningMessageElement.style.display = "none";
-  }, 3000);
+    warningMessageContainer.querySelector(".warning").remove();
+  }, timeout);
 };
 
 export { displayRecipeCards as displayRecipes, displayWarning };
