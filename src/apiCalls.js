@@ -5,6 +5,7 @@
 // global.ingredientsAPIData = ingredientsAPIData;
 
 import { displayWarning } from "../src/domUpdates.js";
+import { findRecipeFromID } from "./recipes.js";
 
 export let usersAPIData;
 export let recipesAPIData;
@@ -29,7 +30,13 @@ export function fetchServerData() {
     usersAPIData = users;
     ingredientsAPIData = ingredients;
     recipesAPIData = recipes;
-  });
+  }).then(() => {
+    usersAPIData.forEach(user => {
+      user.recipesToCook = user.recipesToCook.map(id => {
+        return findRecipeFromID(id, recipesAPIData)
+      })
+    });
+  })
 }
 
 export function sendServerData(userID, recipeID) {
