@@ -48,6 +48,19 @@ const randomRecipeButton = document.querySelector(".random-recipe");
 const filterSettings = document.querySelector(".filter-settings");
 const clearSearchButton = document.querySelector(".clear-search");
 const clearTagsButton = document.querySelector(".clear-tags");
+// print recipe page
+document.addEventListener('DOMContentLoaded', function() {
+  main.addEventListener('click', function(event) {
+      if (event.target.classList.contains('print-button')) {
+          printRecipe();
+      }
+  });
+});
+
+
+const heartOn =
+  '<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: #b30202;transform: ;msFilter:;"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>';
+const heartOff = `<svg class="heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style=" fill: rgba(157, 150, 139, 1); transform: scaleX(-1); msFilter: 'progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)';"> <path d="M12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412l7.332 7.332c.17.299.498.492.875.492a.99.99 0 0 0 .792-.409l7.415-7.415c2.354-2.354 2.354-6.049-.002-8.416a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595zm6.791 1.61c1.563 1.571 1.564 4.025.002 5.588L12 18.586l-6.793-6.793c-1.562-1.563-1.561-4.017-.002-5.584.76-.756 1.754-1.172 2.799-1.172s2.035.416 2.789 1.17l.5.5a.999.999 0 0 0 1.414 0l.5-.5c1.512-1.509 4.074-1.505 5.584-.002z"></path></svg>`;
 
 // EVENT LISTENERS
 addEventListener("load", function () {
@@ -203,8 +216,8 @@ function createRecipeHTML(recipe) {
   article.dataset.id = recipe.id;
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon size='md' name='heart' type='solid' color='red'></box-icon>"
-    : "<box-icon size='md' name='heart' ></box-icon>";
+    ? heartOn
+    : heartOff;
 
   isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
@@ -257,12 +270,12 @@ function createRecipePageHTML(recipe) {
   );
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon size='md' name='heart' type='solid' color='red'></box-icon>"
-    : "<box-icon size='md' name='heart' ></box-icon>";
+    ? heartOn
+    : heartOff;
 
   const checkboxChecked = convertToUS ? "" : "checked";
 
-  recipeContainer.innerHTML = `
+  recipeContainer.innerHTML += `
     <div class="recipe-main">
       <div class="image-container">
         <img src="${recipe.image}" alt="${recipe.name}"/>
@@ -272,7 +285,7 @@ function createRecipePageHTML(recipe) {
       </div>
     </div>
     <div class="instructions">
-      <h1 class="gatile">Instructions</h1>
+      <button class="print-button">Print Recipe</button>
       <ol>${instructionsList}</ol>
     </div>
     <div class="ingredients-container">
@@ -313,11 +326,10 @@ function getIngredientQuantity(recipe, ingredientDataset) {
 function toggleHeart(element, recipe, recipeDataset) {
   const isFavorited = isRecipeFavorited(recipe, recipeDataset);
   if (!isFavorited) {
-    element.innerHTML =
-      "<box-icon size='md' name='heart' type='solid' color='red'></box-icon>";
+    element.innerHTML = heartOn;
     addRecipeToArray(recipeDataset, recipe);
   } else {
-    element.innerHTML = "<box-icon size='md' name='heart'></box-icon>";
+    element.innerHTML = heartOff;
     removeRecipeFromArray(recipeDataset, recipe);
   }
 }
@@ -335,6 +347,15 @@ function setPageToRecipe(recipe) {
   filterSection.classList.add("hidden");
   // jank bug fix for recipe page
   body.style.cssText = "--sidebar-width: 0px";
+  addPrintButtonEventListener(); 
+}
+
+function addPrintButtonEventListener() {
+  const printButton = document.querySelector('.print-button');
+  if (printButton) {
+      printButton.removeEventListener('click', printRecipe);
+      printButton.addEventListener('click', printRecipe);
+  }
 }
 
 function getActiveTags() {
@@ -398,20 +419,33 @@ const filterRecipes = () => {
   updateClearFilterButtons();
 };
 
-const displayWarning = (message, iconName = "bug-alt") => {
-  const warningMessageContainer = document.querySelector(".warning-container");
-  if (!warningMessageContainer) return;
+const displayWarning = (message) => {
+  const warningMessageElement = document.querySelector('.warning');
+  if (!warningMessageElement) return;
 
-  const warning = document.createElement("div");
-  warning.classList.add("warning");
-  warning.innerHTML = `
-  <box-icon color='white' name='${iconName}'></box-icon>
-  ${message}`;
-  warningMessageContainer.appendChild(warning);
+  warningMessageElement.textContent = message;
+  warningMessageElement.style.display = 'block';
 
   setTimeout(() => {
-    warningMessageContainer.querySelector(".warning").remove();
+    warningMessageElement.style.display = 'none';
   }, 3000);
 };
 
-export { displayRecipeCards as displayRecipes, displayWarning };
+window.printRecipe = function() {
+  const recipeName = document.querySelector('.title').innerText;
+  const recipeInstructions = Array.from(document.querySelectorAll('.instructions ol li')).map(li => li.innerText).join('<br>');
+  const recipeIngredients = Array.from(document.querySelectorAll('.ingredients li')).map(li => li.innerText).join('<br>');
+
+  const printWindow = window.open('', '_blank', 'height=600,width=800');
+  printWindow.document.write('<html><head><title>Print</title></head><body>');
+  printWindow.document.write('<h1>' + recipeName + '</h1>');
+  printWindow.document.write('<h2>Ingredients</h2><p>' + recipeIngredients + '</p>');
+  printWindow.document.write('<h2>Instructions</h2><p>' + recipeInstructions + '</p>');
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+};
+
+export { 
+  displayRecipeCards as displayRecipes,
+  displayWarning
+};
