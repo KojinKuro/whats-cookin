@@ -49,11 +49,11 @@ const filterSettings = document.querySelector(".filter-settings");
 const clearSearchButton = document.querySelector(".clear-search");
 const clearTagsButton = document.querySelector(".clear-tags");
 // Iteration 6
-document.addEventListener('DOMContentLoaded', function() {
-  main.addEventListener('click', function(event) {
-      if (event.target.classList.contains('print-button')) {
-          printRecipe();
-      }
+document.addEventListener("DOMContentLoaded", function () {
+  main.addEventListener("click", function (event) {
+    if (event.target.classList.contains("print-button")) {
+      printRecipe();
+    }
   });
 });
 
@@ -423,19 +423,35 @@ const displayWarning = (message, iconName = "bug-alt") => {
   }, 3000);
 };
 
-window.printRecipe = function() {
-  const recipeName = document.querySelector('.title').innerText;
-  const recipeInstructions = Array.from(document.querySelectorAll('.instructions ol li')).map(li => li.innerText).join('<br>');
-  const recipeIngredients = Array.from(document.querySelectorAll('.ingredients li')).map(li => li.innerText).join('<br>');
+function printRecipe() {
+  const recipeName = document.querySelector(".title").innerText;
+  const recipeInstructions = Array.from(
+    document.querySelectorAll(".instructions ol li")
+  )
+    .map((li) => li.innerText)
+    .join("<br>");
+  const recipeIngredients = Array.from(
+    document.querySelectorAll(".ingredients li")
+  )
+    .map((li) => li.innerText)
+    .join("<br>");
 
-  const printWindow = window.open('', '_blank', 'height=600,width=800');
-  printWindow.document.write('<html><head><title>Print</title></head><body>');
-  printWindow.document.write('<h1>' + recipeName + '</h1>');
-  printWindow.document.write('<h2>Ingredients</h2><p>' + recipeIngredients + '</p>');
-  printWindow.document.write('<h2>Instructions</h2><p>' + recipeInstructions + '</p>');
-  printWindow.document.write('</body></html>');
-  printWindow.document.close();
-};
+  const printWindow = window.open("", "_blank", "height=600,width=800");
+  printWindow.document.write("<html><head><title>Print</title></head><body>");
+  printWindow.document.write("<h1>" + recipeName + "</h1>");
+  printWindow.document.write(
+    "<h2>Ingredients</h2><p>" + recipeIngredients + "</p>"
+  );
+  printWindow.document.write(
+    "<h2>Instructions</h2><p>" + recipeInstructions + "</p>"
+  );
+  printWindow.document.write("</body></html>");
 
+  printWindow.document.close(); // necessary for IE >= 10
+  printWindow.focus(); // necessary for IE >= 10*/
+
+  printWindow.onafterprint = printWindow.close;
+  printWindow.print();
+}
 
 export { displayRecipeCards as displayRecipes, displayWarning };
