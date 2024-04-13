@@ -15,7 +15,6 @@ function fetchData(name) {
     .then((r) => r.json())
     .then((data) => data[name])
     .catch((error) => {
-      console.error(error);
       displayWarning(`Unable to fetch ${name} data. Please try again later.`);
     });
 }
@@ -33,31 +32,21 @@ export function fetchServerData() {
   });
 }
 
-
-export function sendServerData(userID, recipeID){
-  const IDs = { 
-    userID: userID, 
-    recipeID: recipeID
-  }
-  console.log(userID)
-  console.log(recipeID)
+export function sendServerData(userID, recipeID) {
   fetch(`http://localhost:3001/api/v1/usersRecipes`, {
     method: "POST",
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(IDs)
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userID, recipeID }),
   })
-  .then(response => {
-    if(!response.ok){
-      throw new Error(`Error ${response.status}`)
-    } 
-    return response.json()
-  })
-  .then(data => {
-    console.log(data.message)
-    return data
-  })
-  .catch((error) => {
-    console.log(error);
-    displayWarning(`Unable to save favorite recipe :(`);
-  });
+    .then((response) => {
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      else return response.json();
+    })
+    .then((data) => {
+      console.log(data.message);
+      return data;
+    })
+    .catch((error) => {
+      displayWarning(`${error}`);
+    });
 }
