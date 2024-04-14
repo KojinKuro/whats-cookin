@@ -3,6 +3,7 @@ import {
   fetchServerData,
   ingredientsAPIData,
   recipesAPIData,
+  sendServerData,
   usersAPIData,
 } from "./apiCalls";
 import { calculateRecipeCost } from "./cost";
@@ -81,15 +82,20 @@ mainDirectory.addEventListener("scroll", () => {
 main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
-      const clickedRecipeCard = e.target.closest(".recipe-card");
-      if (clickedRecipeCard) {
-        const recipe = findRecipeFromID(clickedRecipeCard.dataset.id, recipesAPIData);
+      if (!e.target.closest(".recipe-card")) return;
+      const clickedRecipe = e.target.closest(".recipe-card");
+      const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
 
-        if (e.target.closest(".heart-container")) {
-          toggleHeart(e.target.closest(".heart-container"), recipe, currentUser.recipesToCook);
-        } else {
-          setPageToRecipe(recipe);
-        }
+      if (e.target.closest(".heart-container")) {
+        toggleHeart(
+          e.target.closest(".heart-container"),
+          recipe,
+          currentUser.recipesToCook
+        );
+        e.preventDefault()
+        sendServerData(currentUser.id, recipe.id)
+      } else {
+        setPageToRecipe(recipe);
       }
       break;
 
@@ -205,8 +211,8 @@ function createRecipeHTML(recipe) {
   article.dataset.id = recipe.id;
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon size='md' name='heart' type='solid' color='red'></box-icon>"
-    : "<box-icon size='md' name='heart' ></box-icon>";
+    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
+    : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
 
   isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
@@ -259,8 +265,8 @@ function createRecipePageHTML(recipe) {
   );
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon size='md' name='heart' type='solid' color='red'></box-icon>"
-    : "<box-icon size='md' name='heart' ></box-icon>";
+    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='red'></box-icon>"
+    : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
   
@@ -315,10 +321,10 @@ function toggleHeart(element, recipe, recipeDataset) {
   const isFavorited = isRecipeFavorited(recipe, recipeDataset);
   if (!isFavorited) {
     element.innerHTML =
-      "<box-icon size='md' name='heart' type='solid' color='red'></box-icon>";
+      "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>";
     addRecipeToArray(recipeDataset, recipe);
   } else {
-    element.innerHTML = "<box-icon size='md' name='heart'></box-icon>";
+    element.innerHTML = "<box-icon animation='tada' size='md' name='heart'></box-icon>";
     removeRecipeFromArray(recipeDataset, recipe);
   }
 }
@@ -440,36 +446,5 @@ function printRecipe(recipe, ingredientDataset) {
   printWindow.onafterprint = printWindow.close;
   printWindow.print();
 }
-
-// function printRecipe() {
-//   const recipeName = document.querySelector(".title").innerText;
-//   const recipeInstructions = Array.from(
-//     document.querySelectorAll(".instructions ol li")
-//   )
-//     .map((li) => li.innerText)
-//     .join("<br>");
-//   const recipeIngredients = Array.from(
-//     document.querySelectorAll(".ingredients li")
-//   )
-//     .map((li) => li.innerText)
-//     .join("<br>");
-
-//   const printWindow = window.open("", "_blank", "height=600,width=800");
-//   printWindow.document.write("<html><head><title>Print</title></head><body>");
-//   printWindow.document.write("<h1>" + recipeName + "</h1>");
-//   printWindow.document.write(
-//     "<h2>Ingredients</h2><p>" + recipeIngredients + "</p>"
-//   );
-//   printWindow.document.write(
-//     "<h2>Instructions</h2><p>" + recipeInstructions + "</p>"
-//   );
-//   printWindow.document.write("</body></html>");
-
-//   printWindow.document.close(); // necessary for IE >= 10
-//   printWindow.focus(); // necessary for IE >= 10*/
-
-//   printWindow.onafterprint = printWindow.close;
-//   printWindow.print();
-// }
 
 export { displayRecipeCards as displayRecipes, displayWarning };

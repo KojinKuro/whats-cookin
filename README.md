@@ -29,7 +29,7 @@ Test Suite: `npm run test`
 
 ## ✨ Features
 
-- This website calls a backend server using API calls that stores our recipes
+- This website calls a backend server using API calls that store our recipes
 - Allows filtering recipes using a search bar and recipe tags.
 - Click a button to get a random recipe
 - Save recipes into a list that you can view
@@ -37,7 +37,7 @@ Test Suite: `npm run test`
 
 ## 📚 Context
 
-This website was created in our 7th and 8th week of Turing School of Software and Design. This was a group project of three team memebers. This project took around 75 hours total, averaging 25 hours split amongst each memeber. This was built according to the following [spec sheet](https://frontend.turing.edu/projects/module-2/whats-cookin-part-one.html). There was no design comp provided for this project so our team designed [our own](https://www.figma.com/file/sASmZkfzWbXObPqYVOh9vQ/Figma-basics?type=design&node-id=1669%3A162202&mode=design&t=KfxDWyuUGfOfMnEr-1).
+This website was created in our 7th and 8th week of Turing School of Software and Design. This was a group project of three team members. This project took around 75 hours total, averaging 25 hours split amongst each member. This was built according to the following [spec sheet](https://frontend.turing.edu/projects/module-2/whats-cookin-part-one.html). There was no design comp provided for this project so our team designed [our own](https://www.figma.com/file/sASmZkfzWbXObPqYVOh9vQ/Figma-basics?type=design&node-id=1669%3A162202&mode=design&t=KfxDWyuUGfOfMnEr-1).
 
 ## 🏆 Wins  
 
