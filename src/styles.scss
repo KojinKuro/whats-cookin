@@ -55,6 +55,7 @@ header {
     height: 50px;
     width: 200px;
     font-size: 20px;
+    cursor: pointer;
 
     &:hover {
       text-decoration: underline;
@@ -140,6 +141,7 @@ nav.filter-container {
     font-family: sans-serif;
     border: none;
     border-radius: 4px;
+    cursor: pointer;
   }
 
   .clear-search {
@@ -152,6 +154,10 @@ nav.filter-container {
     background: transparent;
     cursor: pointer;
   }
+}
+
+.heart {
+  cursor: pointer;
 }
 
 /* CODE FOR COOKBOOK OR SAVED RECIPES PAGE */
@@ -215,6 +221,7 @@ main#directory-page {
       rgba(0, 0, 0, 1) 75%,
       rgba(0, 0, 0, 0) 100%
     );
+    cursor: pointer;
   }
 }
 
@@ -357,6 +364,7 @@ main#recipe-page {
   background-color: #ccc;
   -webkit-transition: 0.4s;
   transition: 0.4s;
+  cursor: pointer;
 }
 
 .slider:before {
