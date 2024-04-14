@@ -93,7 +93,7 @@ main.addEventListener("click", (e) => {
         sendServerData(currentUser.id, recipe.id); 
       }
       
-      const clickedImageOrTitle = e.target.closest(".recipe-image, .recipe-name");
+      const clickedImageOrTitle = e.target.closest(".recipe-image");
       if (clickedImageOrTitle) {
         const clickedRecipeCard = clickedImageOrTitle.closest(".recipe-card");
         if (!clickedRecipeCard) return;  
