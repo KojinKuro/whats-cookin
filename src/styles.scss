@@ -211,6 +211,7 @@ main#directory-page {
   }
 
   .recipe-image {
+    z-index: 1;
     object-fit: cover;
     overflow: hidden;
     border-top-left-radius: 15px;
@@ -228,6 +229,9 @@ main#directory-page {
     position: absolute;
     top: 10px;
     left: 10px;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.5); 
+    border-radius: 5px;
   }
 }
 
