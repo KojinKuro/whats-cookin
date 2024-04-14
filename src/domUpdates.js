@@ -49,6 +49,14 @@ const randomRecipeButton = document.querySelector(".random-recipe");
 const filterSettings = document.querySelector(".filter-settings");
 const clearSearchButton = document.querySelector(".clear-search");
 const clearTagsButton = document.querySelector(".clear-tags");
+// Iteration 6
+document.addEventListener("DOMContentLoaded", function () {
+  main.addEventListener("click", function (event) {
+    if (event.target.classList.contains("print-button")) {
+      printRecipe();
+    }
+  });
+});
 
 // EVENT LISTENERS
 addEventListener("load", function () {
@@ -90,24 +98,21 @@ main.addEventListener("click", (e) => {
         setPageToRecipe(recipe);
       }
       break;
+
     case "recipe-page":
       if (e.target.classList.contains("conversion-slider")) {
         toggleConversion();
         const ingredientsContainer = document.querySelector(".ingredients");
-        ingredientsContainer.innerHTML = `${getIngredientQuantity(
-          currentRecipe,
-          ingredientsAPIData
-        )}`;
+        ingredientsContainer.innerHTML = getIngredientQuantity(currentRecipe, ingredientsAPIData);
       } else if (e.target.closest(".heart-container")) {
-        toggleHeart(
-          e.target.closest(".heart-container"),
-          currentRecipe,
-          currentUser.recipesToCook
-        );
+        toggleHeart(e.target.closest(".heart-container"), currentRecipe, currentUser.recipesToCook);
+      } else if (e.target.closest("[name='printer']")) {
+        printRecipe(currentRecipe, ingredientsAPIData);
       }
       break;
   }
 });
+
 randomRecipeButton.addEventListener("click", () => {
   const randomIndex = randomNumber(recipesAPIData.length);
   const randomRecipe = recipesAPIData[randomIndex];
@@ -264,7 +269,7 @@ function createRecipePageHTML(recipe) {
     : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
-
+  
   recipeContainer.innerHTML = `
     <div class="recipe-main">
       <div class="image-container">
@@ -285,17 +290,16 @@ function createRecipePageHTML(recipe) {
           <div class="heart-container">${heartIcon}</div>
         </div>
         <div class="ingredient-settings">
-        <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
+          <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
           <label class="switch">
             <input type="checkbox" ${checkboxChecked} class="conversion-slider">
             <span class="slider round"></span>
           </label>
         </div>
         <hr />
-        <ul class="ingredients">${getIngredientQuantity(
-          recipe,
-          ingredientsAPIData
-        )}</ul>
+        <ul class="ingredients">${getIngredientQuantity(recipe, ingredientsAPIData)}</ul>
+        <hr>
+        <box-icon class='print-icon' name='printer' type='solid' color='black' size='md'></box-icon>
       </div>
     </div>`;
 
@@ -416,5 +420,31 @@ const displayWarning = (message, iconName = "bug-alt") => {
     warningMessageContainer.querySelector(".warning").remove();
   }, 3000);
 };
+
+function printRecipe(recipe, ingredientDataset) {
+  const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
+  const ingredientList = findRecipeIngredients(recipe, ingredientDataset)
+    .map((ingredient, index) => 
+      `<li><div>${ingredient} ${quantityList[index]}</div></li>`
+    )
+    .join("");
+
+  const instructionsList = findRecipeInstructions(recipe).map(
+    (instruction) => `<li>${instruction}</li>`).join("")
+
+  const printWindow = window.open("", "_blank", "height=600,width=800");
+  printWindow.document.write("<html><head><title>Print</title></head><body>");
+  printWindow.document.write(`<h1>${recipe.name}</h1>`);
+  printWindow.document.write(`<h2>Ingredients</h2><ul>${ingredientList}</ul>`);
+  
+  printWindow.document.write(`<h2>Instructions</h2>
+  <ol>${instructionsList}</ol>`);
+  printWindow.document.write("</body></html>");
+
+  printWindow.document.close(); // necessary for IE >= 10
+  printWindow.focus(); // necessary for IE >= 10*/
+  printWindow.onafterprint = printWindow.close;
+  printWindow.print();
+}
 
 export { displayRecipeCards as displayRecipes, displayWarning };
