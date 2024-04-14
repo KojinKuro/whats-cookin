@@ -265,7 +265,7 @@ function createRecipePageHTML(recipe) {
   );
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='red'></box-icon>"
+    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
     : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
