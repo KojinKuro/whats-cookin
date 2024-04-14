@@ -82,19 +82,23 @@ mainDirectory.addEventListener("scroll", () => {
 main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
-      if (!e.target.closest(".recipe-card")) return;
-      const clickedRecipe = e.target.closest(".recipe-card");
-      const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
-
       if (e.target.closest(".heart-container")) {
-        toggleHeart(
-          e.target.closest(".heart-container"),
-          recipe,
-          currentUser.recipesToCook
-        );
-        e.preventDefault()
-        sendServerData(currentUser.id, recipe.id)
-      } else {
+        const heartContainer = e.target.closest(".heart-container");
+        const recipeCard = heartContainer.closest(".recipe-card");
+        if (!recipeCard) return; 
+
+        const recipe = findRecipeFromID(recipeCard.dataset.id, recipesAPIData);
+        toggleHeart(heartContainer, recipe, currentUser.recipesToCook);
+        e.preventDefault();
+        sendServerData(currentUser.id, recipe.id); 
+      }
+      
+      const clickedImageOrTitle = e.target.closest(".recipe-image, .recipe-name");
+      if (clickedImageOrTitle) {
+        const clickedRecipeCard = clickedImageOrTitle.closest(".recipe-card");
+        if (!clickedRecipeCard) return;  
+
+        const recipe = findRecipeFromID(clickedRecipeCard.dataset.id, recipesAPIData);
         setPageToRecipe(recipe);
       }
       break;
