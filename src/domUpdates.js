@@ -82,23 +82,18 @@ mainDirectory.addEventListener("scroll", () => {
 main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
-      if (!e.target.closest(".recipe-card")) return;
-      const clickedRecipe = e.target.closest(".recipe-card");
-      const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
+      const recipeCard = e.target.closest(".recipe-card");
+      if (!recipeCard) return;
+      const recipe = findRecipeFromID(recipeCard.dataset.id, recipesAPIData);
+      e.preventDefault();
 
       if (e.target.closest(".heart-container")) {
-        toggleHeart(
-          e.target.closest(".heart-container"),
-          recipe,
-          currentUser.recipesToCook
-        );
-        e.preventDefault();
-        sendServerData(currentUser.id, recipe.id);
-      } else {
+        const heartContainer = e.target.closest(".heart-container");
+        toggleHeart(heartContainer, recipe, currentUser.recipesToCook);
+      } else if (e.target.closest(".recipe-image")) {
         setPageToRecipe(recipe);
       }
       break;
-
     case "recipe-page":
       if (e.target.classList.contains("conversion-slider")) {
         toggleConversion();
@@ -222,8 +217,8 @@ function createRecipeHTML(recipe) {
   article.setAttribute("tabindex", "0");
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
-    : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
+    ? "<box-icon class='heart' animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
+    : "<box-icon class='heart' animation='tada-hover' size='md' name='heart' ></box-icon>";
 
   isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
@@ -276,8 +271,8 @@ function createRecipePageHTML(recipe) {
   );
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='red'></box-icon>"
-    : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
+    ? "<box-icon class='heart' animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
+    : "<box-icon class='heart' animation='tada-hover' size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
 
@@ -335,11 +330,11 @@ function toggleHeart(element, recipe, recipeDataset) {
   const isFavorited = isRecipeFavorited(recipe, recipeDataset);
   if (!isFavorited) {
     element.innerHTML =
-      "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>";
+      "<box-icon class='heart' animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>";
     addRecipeToArray(recipeDataset, recipe);
+    sendServerData(currentUser.id, recipe.id);
   } else {
-    element.innerHTML =
-      "<box-icon animation='tada' size='md' name='heart'></box-icon>";
+    element.innerHTML = "<box-icon class='heart' animation='tada-hover' size='md' name='heart'></box-icon>";
     removeRecipeFromArray(recipeDataset, recipe);
   }
 }
