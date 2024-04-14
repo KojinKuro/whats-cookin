@@ -349,9 +349,10 @@ main#recipe-page {
 
 /* SLIDER f CODE */
 .switch {
+  display: flex;
   position: relative;
-  display: inline-block;
-  width: 60px;
+  align-items: center;
+  width: auto;
   height: 34px;
 }
 
@@ -364,12 +365,10 @@ main#recipe-page {
 
 /* The slider */
 .slider {
-  position: absolute;
+  position: relative;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 60px;
+  height: 34px;
   background-color: #ccc;
   -webkit-transition: 0.4s;
   transition: 0.4s;
