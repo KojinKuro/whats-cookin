@@ -158,27 +158,31 @@ function init() {
 }
 
 const infiniteLoad = (function () {
-  let currentPage = 1;
+  let currentPage = 0;
   const recipesPerPage = 5;
 
   function resetView() {
     viewChanged = false;
     mainDirectory.scrollTop = 0;
-    currentPage = 1;
+    currentPage = 0;
   }
 
   return function (recipes) {
     if (viewChanged) resetView();
-
-    const recipesToRender = recipes.slice(0, currentPage * recipesPerPage);
-    recipesToRender.forEach((recipe) =>
-      mainDirectory.append(createRecipeHTML(recipe))
-    );
-    currentPage++;
-
     const sentinel = document.querySelector(".sentinel");
     if (sentinel) sentinel.remove();
-    mainDirectory.append(createSentinelHTML());
+
+    const recipesToRender = recipes.slice(
+      currentPage * recipesPerPage,
+      (currentPage + 1) * recipesPerPage
+    );
+    recipesToRender.forEach((recipe, index) => {
+      if (index == recipesToRender.length - 2)
+        mainDirectory.append(createSentinelHTML());
+      mainDirectory.append(createRecipeHTML(recipe));
+    });
+
+    currentPage++;
   };
 })();
 
@@ -196,7 +200,6 @@ function displayRecipeCards(recipeDataset) {
       '<div class="gatile" style="text-align: center; font-size: 5vh">No recipes found.</div>';
   } else {
     mainDirectory.style.justifyContent = null;
-    mainDirectory.innerHTML = "";
     infiniteLoad(recipeDataset);
   }
 }
@@ -209,8 +212,9 @@ function createSentinelHTML() {
 
 function createRecipeHTML(recipe) {
   const article = document.createElement("article");
-  article.classList.add("recipe-card");
-  article.dataset.id = recipe.id;
+  article.setAttribute("class", "recipe-card");
+  article.setAttribute("data-id", recipe.id);
+  article.setAttribute("tabindex", "0");
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? "<box-icon class='heart' animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
