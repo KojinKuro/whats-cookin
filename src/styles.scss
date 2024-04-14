@@ -222,6 +222,12 @@ main#directory-page {
       rgba(0, 0, 0, 0) 100%
     );
     cursor: pointer;
+    position: relative;
+  }
+  .link {
+    position: absolute;
+    top: 10px;
+    left: 10px;
   }
 }
 

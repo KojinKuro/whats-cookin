@@ -231,6 +231,7 @@ function createRecipeHTML(recipe) {
   article.innerHTML = `
     <div class="recipe-image">
       <img src="${recipe.image}" alt="${recipe.name}">
+      <box-icon class='link' name='link-external'></box-icon>
     </div>
     <div class="recipe-info">
       <div class="tags-and-heart">
