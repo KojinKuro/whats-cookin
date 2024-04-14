@@ -294,11 +294,14 @@ function createRecipePageHTML(recipe) {
           <div class="heart-container">${heartIcon}</div>
         </div>
         <div class="ingredient-settings">
-          <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
-          <label class="switch">
-            <input type="checkbox" ${checkboxChecked} class="conversion-slider">
-            <span class="slider round"></span>
-          </label>
+          <div>Cost: $${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
+          <div class="conversion-container">
+            <label class="switch">
+              <span class="weight-conversion">US/Metric:</span>
+              <input type="checkbox"${checkboxChecked} class="conversion-slider">
+              <span class="slider round"></span>
+            </label>
+          </div>
         </div>
         <hr />
         <ul class="ingredients">${getIngredientQuantity(recipe, ingredientsAPIData)}</ul>
