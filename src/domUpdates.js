@@ -211,8 +211,8 @@ function createRecipeHTML(recipe) {
   article.dataset.id = recipe.id;
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
-    : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
+    ? "<box-icon animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
+    : "<box-icon animation='tada-hover' size='md' name='heart' ></box-icon>";
 
   isRecipeFavorited(recipe, currentUser.recipesToCook)
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
@@ -265,8 +265,8 @@ function createRecipePageHTML(recipe) {
   );
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
-    : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
+    ? "<box-icon animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
+    : "<box-icon animation='tada-hover' size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
   
@@ -321,10 +321,10 @@ function toggleHeart(element, recipe, recipeDataset) {
   const isFavorited = isRecipeFavorited(recipe, recipeDataset);
   if (!isFavorited) {
     element.innerHTML =
-      "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>";
+      "<box-icon animation='tada-hover' size='md' name='heart' type='solid' color='#b30202'></box-icon>";
     addRecipeToArray(recipeDataset, recipe);
   } else {
-    element.innerHTML = "<box-icon animation='tada' size='md' name='heart'></box-icon>";
+    element.innerHTML = "<box-icon animation='tada-hover' size='md' name='heart'></box-icon>";
     removeRecipeFromArray(recipeDataset, recipe);
   }
 }
