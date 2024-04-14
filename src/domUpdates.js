@@ -81,38 +81,32 @@ mainDirectory.addEventListener("scroll", () => {
 main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
-      if (!e.target.closest(".recipe-card")) return;
-      const clickedRecipe = e.target.closest(".recipe-card");
-      const recipe = findRecipeFromID(clickedRecipe.dataset.id, recipesAPIData);
+      const clickedRecipeCard = e.target.closest(".recipe-card");
+      if (clickedRecipeCard) {
+        const recipe = findRecipeFromID(clickedRecipeCard.dataset.id, recipesAPIData);
 
-      if (e.target.closest(".heart-container")) {
-        toggleHeart(
-          e.target.closest(".heart-container"),
-          recipe,
-          currentUser.recipesToCook
-        );
-      } else {
-        setPageToRecipe(recipe);
+        if (e.target.closest(".heart-container")) {
+          toggleHeart(e.target.closest(".heart-container"), recipe, currentUser.recipesToCook);
+        } else {
+          setPageToRecipe(recipe);
+        }
       }
       break;
+
     case "recipe-page":
       if (e.target.classList.contains("conversion-slider")) {
         toggleConversion();
         const ingredientsContainer = document.querySelector(".ingredients");
-        ingredientsContainer.innerHTML = `${getIngredientQuantity(
-          currentRecipe,
-          ingredientsAPIData
-        )}`;
+        ingredientsContainer.innerHTML = getIngredientQuantity(currentRecipe, ingredientsAPIData);
       } else if (e.target.closest(".heart-container")) {
-        toggleHeart(
-          e.target.closest(".heart-container"),
-          currentRecipe,
-          currentUser.recipesToCook
-        );
+        toggleHeart(e.target.closest(".heart-container"), currentRecipe, currentUser.recipesToCook);
+      } else if (e.target.closest("[name='printer']")) {
+        printRecipe(currentRecipe, ingredientsAPIData);
       }
       break;
   }
 });
+
 randomRecipeButton.addEventListener("click", () => {
   const randomIndex = randomNumber(recipesAPIData.length);
   const randomRecipe = recipesAPIData[randomIndex];
@@ -269,7 +263,7 @@ function createRecipePageHTML(recipe) {
     : "<box-icon size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
-
+  
   recipeContainer.innerHTML = `
     <div class="recipe-main">
       <div class="image-container">
@@ -280,7 +274,6 @@ function createRecipePageHTML(recipe) {
       </div>
     </div>
     <div class="instructions">
-      <button class="print-button">Print Recipe</button>
       <h1 class="gatile">Instructions</h1>
       <ol>${instructionsList}</ol>
     </div>
@@ -291,17 +284,16 @@ function createRecipePageHTML(recipe) {
           <div class="heart-container">${heartIcon}</div>
         </div>
         <div class="ingredient-settings">
-        <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
+          <div>$${calculateRecipeCost(recipe, ingredientsAPIData)}</div>
           <label class="switch">
             <input type="checkbox" ${checkboxChecked} class="conversion-slider">
             <span class="slider round"></span>
           </label>
         </div>
         <hr />
-        <ul class="ingredients">${getIngredientQuantity(
-          recipe,
-          ingredientsAPIData
-        )}</ul>
+        <ul class="ingredients">${getIngredientQuantity(recipe, ingredientsAPIData)}</ul>
+        <hr>
+        <box-icon class='print-icon' name='printer' type='solid' color='black' size='md'></box-icon>
       </div>
     </div>`;
 
@@ -423,35 +415,61 @@ const displayWarning = (message, iconName = "bug-alt") => {
   }, 3000);
 };
 
-function printRecipe() {
-  const recipeName = document.querySelector(".title").innerText;
-  const recipeInstructions = Array.from(
-    document.querySelectorAll(".instructions ol li")
-  )
-    .map((li) => li.innerText)
-    .join("<br>");
-  const recipeIngredients = Array.from(
-    document.querySelectorAll(".ingredients li")
-  )
-    .map((li) => li.innerText)
-    .join("<br>");
+function printRecipe(recipe, ingredientDataset) {
+  const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
+  const ingredientList = findRecipeIngredients(recipe, ingredientDataset)
+    .map((ingredient, index) => 
+      `<li><div>${ingredient} ${quantityList[index]}</div></li>`
+    )
+    .join("");
+
+  const instructionsList = findRecipeInstructions(recipe).map(
+    (instruction) => `<li>${instruction}</li>`).join("")
 
   const printWindow = window.open("", "_blank", "height=600,width=800");
   printWindow.document.write("<html><head><title>Print</title></head><body>");
-  printWindow.document.write("<h1>" + recipeName + "</h1>");
-  printWindow.document.write(
-    "<h2>Ingredients</h2><p>" + recipeIngredients + "</p>"
-  );
-  printWindow.document.write(
-    "<h2>Instructions</h2><p>" + recipeInstructions + "</p>"
-  );
+  printWindow.document.write(`<h1>${recipe.name}</h1>`);
+  printWindow.document.write(`<h2>Ingredients</h2><ul>${ingredientList}</ul>`);
+  
+  printWindow.document.write(`<h2>Instructions</h2>
+  <ol>${instructionsList}</ol>`);
   printWindow.document.write("</body></html>");
 
   printWindow.document.close(); // necessary for IE >= 10
   printWindow.focus(); // necessary for IE >= 10*/
-
   printWindow.onafterprint = printWindow.close;
   printWindow.print();
 }
+
+// function printRecipe() {
+//   const recipeName = document.querySelector(".title").innerText;
+//   const recipeInstructions = Array.from(
+//     document.querySelectorAll(".instructions ol li")
+//   )
+//     .map((li) => li.innerText)
+//     .join("<br>");
+//   const recipeIngredients = Array.from(
+//     document.querySelectorAll(".ingredients li")
+//   )
+//     .map((li) => li.innerText)
+//     .join("<br>");
+
+//   const printWindow = window.open("", "_blank", "height=600,width=800");
+//   printWindow.document.write("<html><head><title>Print</title></head><body>");
+//   printWindow.document.write("<h1>" + recipeName + "</h1>");
+//   printWindow.document.write(
+//     "<h2>Ingredients</h2><p>" + recipeIngredients + "</p>"
+//   );
+//   printWindow.document.write(
+//     "<h2>Instructions</h2><p>" + recipeInstructions + "</p>"
+//   );
+//   printWindow.document.write("</body></html>");
+
+//   printWindow.document.close(); // necessary for IE >= 10
+//   printWindow.focus(); // necessary for IE >= 10*/
+
+//   printWindow.onafterprint = printWindow.close;
+//   printWindow.print();
+// }
 
 export { displayRecipeCards as displayRecipes, displayWarning };
