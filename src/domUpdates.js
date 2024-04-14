@@ -82,34 +82,32 @@ mainDirectory.addEventListener("scroll", () => {
 main.addEventListener("click", (e) => {
   switch (main.getAttribute("id")) {
     case "directory-page":
+      const recipeCard = e.target.closest(".recipe-card");
+      if (!recipeCard) return;
+      const recipe = findRecipeFromID(recipeCard.dataset.id, recipesAPIData);
+      e.preventDefault();
+
       if (e.target.closest(".heart-container")) {
         const heartContainer = e.target.closest(".heart-container");
-        const recipeCard = heartContainer.closest(".recipe-card");
-        if (!recipeCard) return; 
-
-        const recipe = findRecipeFromID(recipeCard.dataset.id, recipesAPIData);
         toggleHeart(heartContainer, recipe, currentUser.recipesToCook);
-        e.preventDefault();
-        sendServerData(currentUser.id, recipe.id); 
-      }
-      
-      const clickedImageOrTitle = e.target.closest(".recipe-image");
-      if (clickedImageOrTitle) {
-        const clickedRecipeCard = clickedImageOrTitle.closest(".recipe-card");
-        if (!clickedRecipeCard) return;  
-
-        const recipe = findRecipeFromID(clickedRecipeCard.dataset.id, recipesAPIData);
+      } else if (e.target.closest(".recipe-image")) {
         setPageToRecipe(recipe);
       }
       break;
-
     case "recipe-page":
       if (e.target.classList.contains("conversion-slider")) {
         toggleConversion();
         const ingredientsContainer = document.querySelector(".ingredients");
-        ingredientsContainer.innerHTML = getIngredientQuantity(currentRecipe, ingredientsAPIData);
+        ingredientsContainer.innerHTML = getIngredientQuantity(
+          currentRecipe,
+          ingredientsAPIData
+        );
       } else if (e.target.closest(".heart-container")) {
-        toggleHeart(e.target.closest(".heart-container"), currentRecipe, currentUser.recipesToCook);
+        toggleHeart(
+          e.target.closest(".heart-container"),
+          currentRecipe,
+          currentUser.recipesToCook
+        );
       } else if (e.target.closest("[name='printer']")) {
         printRecipe(currentRecipe, ingredientsAPIData);
       }
@@ -269,11 +267,11 @@ function createRecipePageHTML(recipe) {
   );
 
   const heartIcon = isRecipeFavorited(recipe, currentUser.recipesToCook)
-    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='red'></box-icon>"
+    ? "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>"
     : "<box-icon animation='tada' size='md' name='heart' ></box-icon>";
 
   const checkboxChecked = convertToUS ? "" : "checked";
-  
+
   recipeContainer.innerHTML = `
     <div class="recipe-main">
       <div class="image-container">
@@ -301,7 +299,10 @@ function createRecipePageHTML(recipe) {
           </label>
         </div>
         <hr />
-        <ul class="ingredients">${getIngredientQuantity(recipe, ingredientsAPIData)}</ul>
+        <ul class="ingredients">${getIngredientQuantity(
+          recipe,
+          ingredientsAPIData
+        )}</ul>
         <hr>
         <box-icon class='print-icon' name='printer' type='solid' color='black' size='md'></box-icon>
       </div>
@@ -327,8 +328,10 @@ function toggleHeart(element, recipe, recipeDataset) {
     element.innerHTML =
       "<box-icon animation='tada' size='md' name='heart' type='solid' color='#b30202'></box-icon>";
     addRecipeToArray(recipeDataset, recipe);
+    sendServerData(currentUser.id, recipe.id);
   } else {
-    element.innerHTML = "<box-icon animation='tada' size='md' name='heart'></box-icon>";
+    element.innerHTML =
+      "<box-icon animation='tada' size='md' name='heart'></box-icon>";
     removeRecipeFromArray(recipeDataset, recipe);
   }
 }
@@ -428,19 +431,21 @@ const displayWarning = (message, iconName = "bug-alt") => {
 function printRecipe(recipe, ingredientDataset) {
   const quantityList = findRecipeIngredientsQuantity(recipe, convertToUS);
   const ingredientList = findRecipeIngredients(recipe, ingredientDataset)
-    .map((ingredient, index) => 
-      `<li><div>${ingredient} ${quantityList[index]}</div></li>`
+    .map(
+      (ingredient, index) =>
+        `<li><div>${ingredient} ${quantityList[index]}</div></li>`
     )
     .join("");
 
-  const instructionsList = findRecipeInstructions(recipe).map(
-    (instruction) => `<li>${instruction}</li>`).join("")
+  const instructionsList = findRecipeInstructions(recipe)
+    .map((instruction) => `<li>${instruction}</li>`)
+    .join("");
 
   const printWindow = window.open("", "_blank", "height=600,width=800");
   printWindow.document.write("<html><head><title>Print</title></head><body>");
   printWindow.document.write(`<h1>${recipe.name}</h1>`);
   printWindow.document.write(`<h2>Ingredients</h2><ul>${ingredientList}</ul>`);
-  
+
   printWindow.document.write(`<h2>Instructions</h2>
   <ol>${instructionsList}</ol>`);
   printWindow.document.write("</body></html>");
