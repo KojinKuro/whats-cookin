@@ -181,6 +181,7 @@ const infiniteLoad = (function () {
 
   function resetView() {
     viewChanged = false;
+    mainDirectory.innerHTML = "";
     mainDirectory.scrollTop = 0;
     currentPage = 0;
   }
@@ -443,6 +444,8 @@ function updateClearFilterButtons() {
 }
 
 const filterRecipes = (recipes) => {
+  viewChanged = true;
+
   recipesToDisplay = search(
     searchBox.value.trim(),
     filterRecipeByTag(getActiveTags(), recipes),
