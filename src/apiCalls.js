@@ -26,17 +26,19 @@ export function fetchServerData() {
     fetchData("users"),
     fetchData("ingredients"),
     fetchData("recipes"),
-  ]).then(([users, ingredients, recipes]) => {
-    usersAPIData = users;
-    ingredientsAPIData = ingredients;
-    recipesAPIData = recipes;
-  }).then(() => {
-    usersAPIData.forEach(user => {
-      user.recipesToCook = user.recipesToCook.map(id => {
-        return findRecipeFromID(id, recipesAPIData)
-      })
+  ])
+    .then(([users, ingredients, recipes]) => {
+      usersAPIData = users;
+      ingredientsAPIData = ingredients;
+      recipesAPIData = recipes;
+    })
+    .then(() => {
+      usersAPIData.forEach((user) => {
+        user.recipesToCook = user.recipesToCook.map((id) => {
+          return findRecipeFromID(id, recipesAPIData);
+        });
+      });
     });
-  })
 }
 
 export function sendServerData(userID, recipeID) {
@@ -46,7 +48,7 @@ export function sendServerData(userID, recipeID) {
     body: JSON.stringify({ userID, recipeID }),
   })
     .then((response) => {
-      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      if (!response.ok) throw new Error(`${response.status}`);
       else return response.json();
     })
     .then((data) => {
