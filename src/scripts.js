@@ -21,6 +21,9 @@ export function randomNumber(max) {
 
 export function setCurrentUser(user) {
   currentUser = user;
+  // update name here cause this is only time you'll update name
+  const usernameNode = document.querySelector(".user-name");
+  usernameNode.innerText = user.name;
 }
 
 export function setCurrentRecipe(recipe) {

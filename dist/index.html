@@ -8,7 +8,9 @@
   </head>
   <body>
     <header>
-      <h1 class="logo gatile">🍳 What's Cookin'</h1>
+      <h1 class="logo gatile">
+        🍳 What's Cookin' <span class="user-name"></span>?
+      </h1>
       <nav class="nav-buttons">
         <button class="cookbook selected">COOKBOOK</button>
         <button class="saved-recipes">SAVED RECIPES</button>
@@ -17,12 +19,12 @@
 
     <nav class="filter-container">
       <div class="filter-settings">
-          <input
-            type="text"
-            class="search-box"
-            aria-label="search"
-            placeholder="Search ..."
-          />
+        <input
+          type="text"
+          class="search-box"
+          aria-label="search"
+          placeholder="Search ..."
+        />
         <button class="clear-search hidden">X</button>
         <div class="tags-header">
           <h2>Tags</h2>
@@ -37,8 +39,7 @@
       <div class="sentinel"></div>
     </main>
 
-    <div class="warning-container">
-    </div>
+    <div class="warning-container"></div>
   </body>
   <!-- Do not include the scripts.js file here - it is done automatically by the webpack server -->
   <script src="bundle.js"></script>
