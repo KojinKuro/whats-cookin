@@ -49,14 +49,6 @@ const randomRecipeButton = document.querySelector(".random-recipe");
 const filterSettings = document.querySelector(".filter-settings");
 const clearSearchButton = document.querySelector(".clear-search");
 const clearTagsButton = document.querySelector(".clear-tags");
-// Iteration 6
-document.addEventListener("DOMContentLoaded", function () {
-  main.addEventListener("click", function (event) {
-    if (event.target.classList.contains("print-button")) {
-      printRecipe();
-    }
-  });
-});
 
 // EVENT LISTENERS
 addEventListener("load", function () {
