@@ -57,17 +57,17 @@ global.addEventListener("load", function () {
   fetchServerData().then(() => init());
 });
 global.addEventListener("popstate", (e) => {
-  if (e.state) {
-    const state = e.state;
-    switch (state.page) {
-      case "directory":
-        isSavedRecipesView = state.isSavedRecipesView;
-        setPageToDirectory();
-        break;
-      case "recipe":
-        setPageToRecipe(findRecipeFromID(state.id, recipesAPIData));
-        break;
-    }
+  if (!e.state) return;
+  const state = e.state;
+
+  switch (state.page) {
+    case "directory":
+      isSavedRecipesView = state.isSavedRecipesView;
+      setPageToDirectory();
+      break;
+    case "recipe":
+      setPageToRecipe(findRecipeFromID(state.id, recipesAPIData));
+      break;
   }
 });
 searchBox.addEventListener("input", function () {
