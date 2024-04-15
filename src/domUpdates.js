@@ -224,9 +224,7 @@ function createRecipeHTML(recipe) {
     ? addRecipeToArray(currentUser.recipesToCook, recipe)
     : removeRecipeFromArray(currentUser.recipesToCook, recipe);
 
-  const recipeTags = recipe.tags.length
-    ? `<h3 class="recipe-tags">${recipe.tags.join(", ")}</h3>`
-    : "";
+  const recipeTags = recipe.tags.length ? recipe.tags.join(", ") : "no-tags";
 
   article.innerHTML = `
     <div class="recipe-image">
@@ -235,7 +233,7 @@ function createRecipeHTML(recipe) {
     </div>
     <div class="recipe-info">
       <div class="tags-and-heart">
-        ${recipeTags}
+        <h3 class="recipe-tags">${recipeTags}</h3>
         <div class="heart-container">${heartIcon}</div>
       </div>
       <h2 class="recipe-name">${recipe.name}</h2>
