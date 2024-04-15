@@ -129,15 +129,7 @@ navButtonContainer.addEventListener("click", function (e) {
     return;
   }
 
-  viewChanged = true;
-  filterSection.classList.remove("hidden");
-  // jank bug fix for recipe page
-  body.style.cssText = "--sidebar-width: 300px";
-
-  mainDirectory.innerHTML = "";
-  main.setAttribute("id", "directory-page");
-  displayRecipeCards(recipesToDisplay);
-  resetFilters(recipesToDisplay);
+  setPageToDirectory();
 });
 
 // FUNCTIONS
@@ -332,6 +324,18 @@ function toggleHeart(element, recipe, recipeDataset) {
       "<box-icon class='heart' animation='tada-hover' size='md' name='heart'></box-icon>";
     removeRecipeFromArray(recipeDataset, recipe);
   }
+}
+
+function setPageToDirectory() {
+  viewChanged = true;
+  filterSection.classList.remove("hidden");
+  // jank bug fix for recipe page
+  body.style.cssText = "--sidebar-width: 300px";
+
+  mainDirectory.innerHTML = "";
+  main.setAttribute("id", "directory-page");
+  displayRecipeCards(recipesToDisplay);
+  resetFilters(recipesToDisplay);
 }
 
 function setPageToRecipe(recipe) {
