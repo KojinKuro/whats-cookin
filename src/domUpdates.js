@@ -44,6 +44,8 @@ const searchBox = document.querySelector(".search-box");
 const tagsContainer = document.querySelector(".tags-container");
 // changing view query selectors
 const navButtonContainer = document.querySelector(".nav-buttons");
+const cookbookButton = document.querySelector("button.cookbook");
+const savedRecipesButton = document.querySelector("button.saved-recipes");
 const randomRecipeButton = document.querySelector(".random-recipe");
 // clear buttons query selectors
 const filterSettings = document.querySelector(".filter-settings");
@@ -51,11 +53,29 @@ const clearSearchButton = document.querySelector(".clear-search");
 const clearTagsButton = document.querySelector(".clear-tags");
 
 // EVENT LISTENERS
-addEventListener("load", function () {
+global.addEventListener("load", function () {
   fetchServerData().then(() => init());
 });
+global.addEventListener("popstate", (e) => {
+  if (e.state) {
+    const state = e.state;
+    switch (state.page) {
+      case "directory":
+        isSavedRecipesView = state.isSavedRecipesView;
+        setPageToDirectory();
+        break;
+      case "recipe":
+        setPageToRecipe(findRecipeFromID(state.id, recipesAPIData));
+        break;
+    }
+  }
+});
 searchBox.addEventListener("input", function () {
-  filterRecipes();
+  const recipes = isSavedRecipesView
+    ? currentUser.recipesToCook
+    : recipesAPIData;
+
+  filterRecipes(recipes);
 });
 filterSettings.addEventListener("click", function (e) {
   if (e.target.classList.contains("clear-search")) {
@@ -66,7 +86,10 @@ filterSettings.addEventListener("click", function (e) {
     e.target.classList.toggle("tag-active");
   }
 
-  filterRecipes();
+  const recipes = isSavedRecipesView
+    ? currentUser.recipesToCook
+    : recipesAPIData;
+  filterRecipes(recipes);
 });
 mainDirectory.addEventListener("scroll", () => {
   if (isSentinelInView()) displayRecipeCards(recipesToDisplay);
@@ -84,6 +107,11 @@ main.addEventListener("click", (e) => {
         toggleHeart(heartContainer, recipe, currentUser.recipesToCook);
       } else if (e.target.closest(".recipe-image")) {
         setPageToRecipe(recipe);
+        history.pushState(
+          { page: "recipe", id: `${recipe.id}` },
+          "",
+          `${recipe.id}`
+        );
       }
       break;
     case "recipe-page":
@@ -111,14 +139,14 @@ randomRecipeButton.addEventListener("click", () => {
   const randomIndex = randomNumber(recipesAPIData.length);
   const randomRecipe = recipesAPIData[randomIndex];
   setPageToRecipe(randomRecipe);
+  history.pushState(
+    { page: "recipe", id: `${randomRecipe.id}` },
+    "",
+    `${randomRecipe.id}`
+  );
 });
 
 navButtonContainer.addEventListener("click", function (e) {
-  this.querySelectorAll("button").forEach((button) =>
-    button.classList.remove("selected")
-  );
-  e.target.classList.add("selected");
-
   if (e.target.classList.contains("cookbook")) {
     isSavedRecipesView = false; /* used for filtering */
     recipesToDisplay = recipesAPIData;
@@ -130,6 +158,8 @@ navButtonContainer.addEventListener("click", function (e) {
   }
 
   setPageToDirectory();
+  const url = isSavedRecipesView ? "saved-recipes" : "cookbook";
+  history.pushState({ page: "directory", isSavedRecipesView }, "", url);
 });
 
 // FUNCTIONS
@@ -138,7 +168,11 @@ function init() {
   recipesToDisplay = recipesAPIData;
   displayRecipeCards(recipesToDisplay);
   updateTags(recipesToDisplay);
-  logo.innerText += ` ${currentUser.name}`;
+  history.replaceState(
+    { page: "directory", isSavedRecipesView },
+    "",
+    document.location.href
+  );
 }
 
 const infiniteLoad = (function () {
@@ -327,6 +361,17 @@ function toggleHeart(element, recipe, recipeDataset) {
 }
 
 function setPageToDirectory() {
+  navButtonContainer
+    .querySelectorAll("button")
+    .forEach((button) => button.classList.remove("selected"));
+  if (!isSavedRecipesView) {
+    cookbookButton.classList.add("selected");
+    recipesToDisplay = recipesAPIData;
+  } else {
+    savedRecipesButton.classList.add("selected");
+    recipesToDisplay = currentUser.recipesToCook;
+  }
+
   viewChanged = true;
   filterSection.classList.remove("hidden");
   // jank bug fix for recipe page
@@ -398,11 +443,7 @@ function updateClearFilterButtons() {
     : clearTagsButton.classList.add("hidden");
 }
 
-const filterRecipes = () => {
-  const recipes = isSavedRecipesView
-    ? currentUser.recipesToCook
-    : recipesAPIData;
-
+const filterRecipes = (recipes) => {
   recipesToDisplay = search(
     searchBox.value.trim(),
     filterRecipeByTag(getActiveTags(), recipes),
