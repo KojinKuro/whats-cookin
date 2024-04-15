@@ -149,10 +149,8 @@ randomRecipeButton.addEventListener("click", () => {
 navButtonContainer.addEventListener("click", function (e) {
   if (e.target.classList.contains("cookbook")) {
     isSavedRecipesView = false; /* used for filtering */
-    recipesToDisplay = recipesAPIData;
   } else if (e.target.classList.contains("saved-recipes")) {
     isSavedRecipesView = true; /* used for filtering */
-    recipesToDisplay = currentUser.recipesToCook;
   } else {
     return;
   }
