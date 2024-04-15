@@ -374,13 +374,12 @@ function setPageToDirectory() {
 
   viewChanged = true;
   filterSection.classList.remove("hidden");
-  // jank bug fix for recipe page
-  body.style.cssText = "--sidebar-width: 300px";
-
   mainDirectory.innerHTML = "";
   main.setAttribute("id", "directory-page");
   displayRecipeCards(recipesToDisplay);
   resetFilters(recipesToDisplay);
+  // jank bug fix for recipe page
+  body.style.cssText = "--sidebar-width: 300px";
 }
 
 function setPageToRecipe(recipe) {
