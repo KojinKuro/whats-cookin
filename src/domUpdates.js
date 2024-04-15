@@ -338,7 +338,8 @@ function toggleHeart(element, recipe, recipeDataset) {
     addRecipeToArray(recipeDataset, recipe);
     sendServerData(currentUser.id, recipe.id);
   } else {
-    element.innerHTML = "<box-icon class='heart' animation='tada-hover' size='md' name='heart'></box-icon>";
+    element.innerHTML =
+      "<box-icon class='heart' animation='tada-hover' size='md' name='heart'></box-icon>";
     removeRecipeFromArray(recipeDataset, recipe);
   }
 }
@@ -449,13 +450,19 @@ function printRecipe(recipe, ingredientDataset) {
     .join("");
 
   const printWindow = window.open("", "_blank", "height=600,width=800");
-  printWindow.document.write("<html><head><title>Print</title></head><body>");
-  printWindow.document.write(`<h1>${recipe.name}</h1>`);
-  printWindow.document.write(`<h2>Ingredients</h2><ul>${ingredientList}</ul>`);
-
-  printWindow.document.write(`<h2>Instructions</h2>
-  <ol>${instructionsList}</ol>`);
-  printWindow.document.write("</body></html>");
+  printWindow.document.write(`
+  <html>
+    <head>
+      <title>Print</title>
+    </head>
+    <body>
+      <h1>${recipe.name}</h1>
+      <h2>Ingredients</h2>
+      <ul>${ingredientList}</ul>
+      <h2>Instructions</h2>
+      <ol>${instructionsList}</ol>
+    </body>
+  </html>`);
 
   printWindow.document.close(); // necessary for IE >= 10
   printWindow.focus(); // necessary for IE >= 10*/
