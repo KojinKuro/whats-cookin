@@ -177,7 +177,7 @@ function init() {
 
 const infiniteLoad = (function () {
   let currentPage = 0;
-  const recipesPerPage = 5;
+  const recipesPerPage = 8;
 
   function resetView() {
     viewChanged = false;
